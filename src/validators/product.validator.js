@@ -1,20 +1,22 @@
 const joi = require('@hapi/joi');
 const schemas = {
-	addGame: joi.object().keys({
+	addProduct: joi.object().keys({
+		eID: joi.string().required(),
 		name: joi.string().required(),
-		description: joi.string().required(),
+		price: joi.string().required(),
 		types: joi.array().required(),
 	}),
-	editGame: joi.object().keys({
+	editProduct: joi.object().keys({
 		id: joi.string().required(),
+		eID: joi.string().required(),
 		name: joi.string().required(),
-		description: joi.string().required(),
+		price: joi.string().required(),
 		types: joi.array().required(),
 	}),
-	findGameByType: joi.object().keys({
+	findProductByType: joi.object().keys({
         types: joi.array().required()
     }),
-	findGameByName: joi.object().keys({
+	findProductByName: joi.object().keys({
 		name: joi.string().required()
 	}),
 };

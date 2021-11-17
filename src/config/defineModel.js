@@ -10,7 +10,7 @@ const defaultModel = {
     boolean: { type: Boolean, default: true },
     booleanFalse: { type: Boolean, default: false },
     object: { type: Object, default: {} },
-    stringImage: { type: String },
+    stringImage: { type: String , default: ""},
     stringEvaluate: { type: String, default: "Unknown" },
   };
   const defaultRoles = {

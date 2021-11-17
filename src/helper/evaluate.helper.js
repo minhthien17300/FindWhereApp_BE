@@ -1,5 +1,5 @@
 const EVALUATE = require('../models/EVALUATE.model');
-const GAME = require('../models/GAMEINFO.model');
+const PRODUCT = require('../models/PRODUCT.model');
 const USER = require('../models/USERINFO.model');
 const {DontSayTheseWords} = require('../config/config');
 const {defaultGameStatus} = require('../config/defineModel');
@@ -12,36 +12,20 @@ exports.checkComment = (comment) => {
     return true;
 }
 
-exports.scoreCalculatorAsync = async (gID) => {
+exports.scoreCalculatorAsync = async (pID) => {
     try {
         var score = 0;
-        var review = "Unknown";
         var avgScore = 0;
-        const evaluates = await EVALUATE.find({ gID: gID });
+        const evaluates = await EVALUATE.find({ pID: pID });
         if (evaluates.length > 0) {
             for (var evaluate of evaluates) {
                 score = score + evaluate.score;
             }
             avgScore = score/evaluates.length;
-            if (avgScore <= 1) {
-                review = defaultGameStatus.VeryNegative;
-            }
-            else if (avgScore <=2) {
-                review = defaultGameStatus.Negative;
-            }
-            else if (avgScore <=3) {
-                review = defaultGameStatus.Mixed;
-            }
-            else if (avgScore <=4) {
-                review = defaultGameStatus.Positive;
-            }
-            else {
-                review = defaultGameStatus.VeryPositive;
-            }
         }
-        await GAME.findOneAndUpdate(
-                { _id: gID},
-                { score: avgScore, review: review },
+        await PRODUCT.findOneAndUpdate(
+                { _id: pID },
+                { score: avgScore },
                 { new: true }
             );
     } catch (err) {

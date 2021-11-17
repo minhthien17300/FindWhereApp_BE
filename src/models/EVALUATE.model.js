@@ -4,7 +4,7 @@ const { defaultModel } = require('../config/defineModel');
 // Evaluate Schema
 const EvaluateSchema = mongoose.Schema({
   uID: defaultModel.stringR,
-  gID: defaultModel.stringR,
+  pID: defaultModel.stringR,
   score: defaultModel.number,
   comment: defaultModel.stringR,
   dateEvaluate: defaultModel.date

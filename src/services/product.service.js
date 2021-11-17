@@ -1,31 +1,33 @@
-const GAME = require("../models/GAMEINFO.model");
+const PRODUCT = require("../models/PRODUCT.model");
 const { string, array } = require('@hapi/joi');
-const { $where } = require("../models/GAMEINFO.model");
+const { $where } = require("../models/PRODUCT.model");
 const { query } = require("express");
 
-exports.addGameAsync = async body => {
+exports.addProductAsync = async body => {
     try {
-        const { name, description, types } = body;
-        const gameExist = await GAME.findOne({ 
+        const { eID, name, price, types } = body;
+        const productExist = await PRODUCT.findOne({ 
+            eID: eID,
             name: name 
         });
-        if(gameExist) {
+        if(productExist) {
             return {
-                message: "Game đã tồn tại!",
+                message: "Product đã tồn tại!",
                 success: false
             };
         };
 
-        const newGame = new GAME({
+        const newProduct = new PRODUCT({
+            eID: eID,
             name: name,
-            description: description,
+            price: price,
             types: types
         });
-        await newGame.save();
+        await newProduct.save();
         return {
             message: "Tạo thành công!",
             success: true,
-            data: newGame
+            data: newProduct
         }
     } catch (err) {
 		console.log(err);
@@ -33,23 +35,24 @@ exports.addGameAsync = async body => {
 	}
 };
 
-exports.editGameAsync = async ( body ) => {
+exports.editProductAsync = async ( body ) => {
     try {
-        const { id, name, description, types } = body;
-        const game = await GAME.findOneAndUpdate(
+        const { id, eID, name, price, types } = body;
+        const product = await PRODUCT.findOneAndUpdate(
 			{ _id: id },
 			{ 
+                eID: eID,
 				name: name,
-				description: description,
+				price: price,
 				types: types
 			},
 			{ new: true }
 		);
-		if (game != null) {
+		if (product != null) {
 			return {
 			message: 'Đổi thông tin thành công!',
 			success: true,
-            data: game
+            data: product
 			};
 		}
 		else {
@@ -64,9 +67,9 @@ exports.editGameAsync = async ( body ) => {
 	}
 }
 
-exports.deleteGameAsync = async (id) => {
+exports.deleteProductAsync = async (id) => {
     try {
-        const game = await GAME.deleteOne({ _id: id });
+        const product = await PRODUCT.deleteOne({ _id: id });
 		return {
             message: "Xóa thành công!",
             success: true,
@@ -80,21 +83,21 @@ exports.deleteGameAsync = async (id) => {
 	}
 }
 
-exports.findGameByTypeAsync = async body => {
+exports.findProductByTypeAsync = async body => {
     try {
         const { types } = body;
-        const games = await GAME.find({
+        const products = await PRODUCT.find({
             types: { $in: types }
         });
-        if(games.length != 0) {
+        if(products.length != 0) {
             return {
-            message: "Danh sách game!",
+            message: "Danh sách product!",
             success: true,
-            data: games
+            data: products
             }
         } else {
             return {
-                message: "Không tìm thấy game!",
+                message: "Không tìm thấy product!",
                 success: false
             }
         }
@@ -104,41 +107,41 @@ exports.findGameByTypeAsync = async body => {
 	}
 };
 
-exports.getALLGameAsync = async () => {
+exports.getALLProductAsync = async () => {
     try {
-        const games = await GAME.find();
-        return games;
+        const products = await PRODUCT.find();
+        return products;
     } catch (err) {
 		console.log(err);
 		return null;
 	}
 };
 
-exports.getGameDetailAsync = async (id) => {
+exports.getProductDetailAsync = async (id) => {
     try {
-        const game = await GAME.findById({ _id: id });
-        return game;
+        const product = await PRODUCT.findById({ _id: id });
+        return product;
     } catch (err) {
 		console.log(err);
 		return null;
 	}
 }
 
-exports.findGameByNameAsync = async body => {
+exports.findProductByNameAsync = async body => {
     try {
         const { name } = body;
         var nameRegex = new RegExp(name)
-        const games = await GAME.find({name :{$regex: nameRegex, $options: 'i'}});
-        if(games.length == 0) {
+        const products = await PRODUCT.find({name :{$regex: nameRegex, $options: 'i'}});
+        if(products.length == 0) {
             return {
-                message: "Không tìm thấy Game!",
+                message: "Không tìm thấy Product!",
                 success: false
             }
         } else {
             return {
-                message: "Danh sách Game",
+                message: "Danh sách Product",
                 success: true,
-                data: games
+                data: products
             }
         }
     } catch (err) {

@@ -3,10 +3,10 @@ const evaluateHelper = require('../helper/evaluate.helper');
 
 exports.addEvaluateAsync = async ( uID, body ) => {
     try {
-        const { gID, score, comment } = body;
+        const { pID, score, comment } = body;
         const evaluate = await EVALUATE.findOne({
             uID: uID,
-            gID: gID
+            pID: pID
         });
         if (!evaluateHelper.checkComment(comment)) {
             if (!await evaluateHelper.autoBanUserAsync(uID)) {
@@ -30,13 +30,13 @@ exports.addEvaluateAsync = async ( uID, body ) => {
         var curDate = new Date();
         const newEvaluate = new EVALUATE({
             uID: uID,
-            gID: gID,
+            pID: pID,
             score: score,
             comment: comment,
             dateEvaluate: curDate
         });
         await newEvaluate.save();
-        await evaluateHelper.scoreCalculatorAsync(gID);
+        await evaluateHelper.scoreCalculatorAsync(pID);
         return {
             message: "Đã thêm đánh giá!",
             success: true,
@@ -50,7 +50,7 @@ exports.addEvaluateAsync = async ( uID, body ) => {
 
 exports.editEvaluateAsync = async ( uID, body ) => {
     try {
-        const { gID, score, comment } = body;
+        const { pID, score, comment } = body;
         if (!evaluateHelper.checkComment(comment)) {
             if (!await evaluateHelper.autoBanUserAsync(uID)) {
                 return {
@@ -66,11 +66,11 @@ exports.editEvaluateAsync = async ( uID, body ) => {
         }
         var curDate = new Date();
         const evaluate = await EVALUATE.findOneAndUpdate(
-            { uID: uID, gID: gID },
+            { uID: uID, pID: pID },
             { score: score, comment: comment, dateEvaluate: curDate },
             { new: true }
         )
-        await evaluateHelper.scoreCalculatorAsync(gID);
+        await evaluateHelper.scoreCalculatorAsync(pID);
         return {
             message: "Đã chỉnh sửa đánh giá!",
             success: true,
@@ -82,10 +82,10 @@ exports.editEvaluateAsync = async ( uID, body ) => {
 	}
 }
 
-exports.deleteEvaluateAsync = async (uID, gID) => {
+exports.deleteEvaluateAsync = async (uID, pID) => {
     try {
-        const evaluate = await EVALUATE.deleteOne({ uID: uID, gID: gID });
-        await evaluateHelper.scoreCalculatorAsync(gID);
+        const evaluate = await EVALUATE.deleteOne({ uID: uID, pID: pID });
+        await evaluateHelper.scoreCalculatorAsync(pID);
 		return {
             message: "Xóa thành công!",
             success: true,
@@ -99,9 +99,9 @@ exports.deleteEvaluateAsync = async (uID, gID) => {
 	}
 }
 
-exports.getEvaluateOfGameAsync = async (gID) => {
+exports.getEvaluateOfGameAsync = async (pID) => {
     try {
-        const evaluates = await EVALUATE.find({ gID: gID });
+        const evaluates = await EVALUATE.find({ pID: pID });
         return {
             message: "Danh sách đánh giá",
             success: true,
@@ -116,9 +116,9 @@ exports.getEvaluateOfGameAsync = async (gID) => {
 	}
 }
 
-exports.getUserEvaluateAsync = async (uID, gID) => {
+exports.getUserEvaluateAsync = async (uID, pID) => {
     try {
-        const evaluate = await EVALUATE.findOne({ uID: uID, gID: gID });
+        const evaluate = await EVALUATE.findOne({ uID: uID, pID: pID });
         if (evaluate != null) {
             return {
                 message: "Lấy đánh giá thành công!",
@@ -139,9 +139,9 @@ exports.getUserEvaluateAsync = async (uID, gID) => {
 
 exports.evaluateFilterAsync = async body => {
     try {
-        const { gID, scores } = body;
+        const { pID, scores } = body;
         const evaluates = await EVALUATE.find({
-            gID: gID,
+            pID: pID,
             score: { $in: scores }
         });
         if (evaluates.length > 0) {

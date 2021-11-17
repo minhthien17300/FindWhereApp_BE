@@ -1,9 +1,9 @@
-const gameServices = require('../services/game.service');
+const productServices = require('../services/product.service');
 const controller = require('./message.controller');
 
-exports.addGameAsync = async (req, res, next) => {
+exports.addProductAsync = async (req, res, next) => {
     try {
-        const resServices = await gameServices.addGameAsync(req.value.body);
+        const resServices = await productServices.addProductAsync(req.value.body);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
@@ -19,9 +19,9 @@ exports.addGameAsync = async (req, res, next) => {
 	}
 }
 
-exports.editGameAsync = async (req, res, next) => {
+exports.editProductAsync = async (req, res, next) => {
 	try {
-		const resServices = await gameServices.editGameAsync(req.value.body);
+		const resServices = await productServices.editProductAsync(req.value.body);
 		if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
@@ -37,9 +37,9 @@ exports.editGameAsync = async (req, res, next) => {
 	}
 }
 
-exports.deleteGameAsync = async (req, res, next) => {
+exports.deleteProductAsync = async (req, res, next) => {
 	try {
-		const resServices = await gameServices.deleteGameAsync(req.body.id);
+		const resServices = await productServices.deleteProductAsync(req.body.id);
 		if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 500, resServices.message);
 		}
@@ -55,9 +55,9 @@ exports.deleteGameAsync = async (req, res, next) => {
 	}
 }
 
-exports.findGameByTypeAsync = async (req, res, next) =>{
+exports.findProductByTypeAsync = async (req, res, next) =>{
     try {
-        const resServices = await gameServices.findGameByTypeAsync(req.value.body);
+        const resServices = await productServices.findProductByTypeAsync(req.value.body);
         if(!resServices.success) {
             return controller.sendSuccess(res, {}, 404, resServices.message);
 		}
@@ -73,9 +73,9 @@ exports.findGameByTypeAsync = async (req, res, next) =>{
 	}
 }
 
-exports.getALLGameAsync = async (req, res, next) =>{
+exports.getALLProductAsync = async (req, res, next) =>{
     try {
-        const resServices = await gameServices.getALLGameAsync();
+        const resServices = await productServices.getALLProductAsync();
         if(resServices == null) {
             return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
 		}
@@ -90,9 +90,9 @@ exports.getALLGameAsync = async (req, res, next) =>{
 	}
 }
 
-exports.getGameDetailAsync = async (req, res, next) => {
+exports.getProductDetailAsync = async (req, res, next) => {
 	try {
-        const resServices = await gameServices.getGameDetailAsync(req.body.id);
+        const resServices = await productServices.getProductDetailAsync(req.body.id);
         if(resServices == null) {
             return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
 		}
@@ -107,9 +107,9 @@ exports.getGameDetailAsync = async (req, res, next) => {
 	}
 }
 
-exports.findGameByNameAsync = async (req, res, next) => {
+exports.findProductByNameAsync = async (req, res, next) => {
 	try {
-        const resServices = await gameServices.findGameByNameAsync(req.value.body);
+        const resServices = await productServices.findProductByNameAsync(req.value.body);
         if(!resServices.success) {
             return controller.sendSuccess(res, {}, 404, resServices.message);
 		}
