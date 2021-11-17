@@ -9,6 +9,7 @@ const UserSchema = mongoose.Schema({
   email: defaultModel.stringUnique,
   phone: defaultModel.stringPhone,
   gender: defaultModel.number,
+  location: defaultModel.string,
   dateofBirth: defaultModel.date,
   role: defaultModel.number,
   otp: defaultModel.string,
