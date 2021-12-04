@@ -52,6 +52,60 @@ exports.registerUserAsync = async body => {
 		return {
 			message: 'Đăng ký thành công',
 			success: true,
+			email: email
+		};
+	} catch (err) {
+		console.log(err);
+		return {
+			error: 'Internal Server Error',
+			success: false
+		};
+	}
+};
+
+exports.addEnterpriseAsync = async body => {
+	try {
+		const { userName, name, email, phone, lat, lng } = body;
+		//kiểm tra xem đã có email trong database chưa
+		const emailExist = await USER.findOne({
+			email: email
+		});
+		if (emailExist)
+			return {
+				message: 'Email đã tồn tại!',
+				success: false
+			};
+        //kiểm tra xem đã có username trong database chưa
+        const userExist = await USER.findOne({
+            userName: userName
+        });
+        if(userExist)
+            return {
+                message: "Tài khoản đã tồn tại!",
+                success: false
+            }
+        //mã hóa password
+		const hashedPassword = await bcrypt.hash(12345, 8);
+
+		//lưu lại ngày tạo
+		var curDate = new Date();
+        //lưu enterprise
+		const newUser = new USER({
+			userName: userName,
+			userPwd: hashedPassword,
+            name: name,
+            email: email,
+			phone: phone,
+			dateofBirth: curDate,
+			role: 2,
+			lat: lat,
+			lng: lng
+		});
+		await newUser.save();
+		return {
+			message: 'Tạo thành công',
+			success: true,
+            email: email
 		};
 	} catch (err) {
 		console.log(err);
@@ -77,6 +131,14 @@ exports.loginAsync = async body => {
 				success: false
 			};
 		}
+		
+		if (!user.isActived) {
+			return {
+				message: 'Tài khoản của bạn đã bị khóa, hãy liên hệ email: phamduylap123456@gmail.com để trình bày!',
+				success: false
+			}
+		}		
+
 		const checkPassword = await bcrypt.compare(userPwd, user.userPwd);
 		if (!checkPassword) {
 			return {
@@ -177,10 +239,10 @@ exports.fotgotPassword = async body => {
 			const mailOptions = {
 				to: result.email,
 				from: configEnv.Email,
-				subject: 'Quên mật khẩu ReviewGame',
-				text:   'Có vẻ như bạn đã quên mật khẩu ReviewGame và muốn lấy lại\n'+
+				subject: 'Quên mật khẩu FindWhere',
+				text:   'Có vẻ như bạn đã quên mật khẩu FindWhere và muốn lấy lại\n'+
 						'Mã OTP của bạn là: ' + result.otp + '\n'+
-						'Nếu đó không phải là yêu cầu của bạn vui lòng bỏ qua eamil này!'
+						'Nếu đó không phải là yêu cầu của bạn vui lòng bỏ qua email này!'
 			};
 			const resultSendMail = await sendMail(mailOptions);
 			console.log(resultSendMail);
@@ -262,6 +324,18 @@ exports._findUserByRoleAsync = async () => {
 	}
 };
 
+exports._findEnterpriseByRoleAsync = async () => {
+	try {
+		const user = await USER.findOne({
+			role: 2
+		});
+		return user;
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+};
+
 exports.changeInfoAsync = async (id, body) => {
 	try {
 		const { name, email, phone, gender, dateofBirth } = body;
@@ -273,6 +347,41 @@ exports.changeInfoAsync = async (id, body) => {
 				phone: phone,
 				gender: gender,
 				dateofBirth: dateofBirth
+			},
+			{ new: true }
+		);
+		if (user != null) {
+			return {
+			message: 'Đổi thông tin thành công!',
+			success: true
+			};
+		}
+		else {
+			return {
+				message: "Đổi thông tin không thành công!",
+				success: false
+			};
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			message: 'Oops! Có lỗi xảy ra!',
+			success: false
+		};
+	}
+};
+
+exports.changeEnterpriseInfoAsync = async (id, body) => {
+	try {
+		const { name, email, phone, lat, lng } = body;
+		const user = await USER.findOneAndUpdate(
+			{ _id: id },
+			{ 
+				name: name,
+				email: email,
+				phone: phone,
+				lat: lat,
+				lng: lng
 			},
 			{ new: true }
 		);
@@ -352,3 +461,53 @@ exports.unbanUserAsync = async (id) => {
 		};
 	}
 };
+
+exports.getALLUserAsync = async () => {
+	try {
+		const users = await USER.find({ role: 0 });
+		if (users.length == 0) {
+			return {
+				message: "Không có User trong hệ thống!",
+				data: {},
+				success: false
+			}
+		} else {
+			return {
+				message: "Danh sách User",
+				data: users,
+				success: true
+			}
+		}
+	} catch (error) {
+		console.log(error);
+		return {
+			message: 'Oops! Có lỗi xảy ra!',
+			success: false
+		};
+	}
+}
+
+exports.getALLEnterpriseAsync = async () => {
+	try {
+		const users = await USER.find({ role: 2 });
+		if (users.length == 0) {
+			return {
+				message: "Không có Enterprise trong hệ thống!",
+				data: {},
+				success: false
+			}
+		} else {
+			return {
+				message: "Danh sách Enterprise",
+				data: users,
+				success: true
+			}
+		}
+	} catch (error) {
+		console.log(error);
+		return {
+			message: 'Oops! Có lỗi xảy ra!',
+			success: false
+		};
+	}
+}

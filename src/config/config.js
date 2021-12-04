@@ -10,13 +10,11 @@ const configEnv = {
 const DFRoleValue = ["User", "Admin"]
 const DFGenderValue = ["Male","Female", "Unknown"]
 const DFStatusesValue = ["ACTIVE","BAN"]
-const DFGameStatusValue = ["VeryPositive","Positive","Mixed","Negative","VeryNegative"]
 const DontSayTheseWords = ["fuck", "fucking", "trash", "shit", "cức"]
 module.exports = {
 	configEnv,
 	DFRoleValue,
 	DFGenderValue,
 	DFStatusesValue,
-    DFGameStatusValue,
 	DontSayTheseWords,
 };

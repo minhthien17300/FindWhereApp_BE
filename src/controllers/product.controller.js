@@ -3,7 +3,9 @@ const controller = require('./message.controller');
 
 exports.addProductAsync = async (req, res, next) => {
     try {
-        const resServices = await productServices.addProductAsync(req.value.body);
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await productServices.addProductAsync(id, req.value.body, req.files["images"]);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
@@ -21,7 +23,9 @@ exports.addProductAsync = async (req, res, next) => {
 
 exports.editProductAsync = async (req, res, next) => {
 	try {
-		const resServices = await productServices.editProductAsync(req.value.body);
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await productServices.editProductAsync(id, req.value.body, req.files["images"]);
 		if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
@@ -57,7 +61,7 @@ exports.deleteProductAsync = async (req, res, next) => {
 
 exports.findProductByTypeAsync = async (req, res, next) =>{
     try {
-        const resServices = await productServices.findProductByTypeAsync(req.value.body);
+        const resServices = await productServices.findProductByTypeAsync(req.query);
         if(!resServices.success) {
             return controller.sendSuccess(res, {}, 404, resServices.message);
 		}
@@ -92,7 +96,7 @@ exports.getALLProductAsync = async (req, res, next) =>{
 
 exports.getProductDetailAsync = async (req, res, next) => {
 	try {
-        const resServices = await productServices.getProductDetailAsync(req.body.id);
+        const resServices = await productServices.getProductDetailAsync(req.query.id);
         if(resServices == null) {
             return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
 		}
@@ -109,7 +113,7 @@ exports.getProductDetailAsync = async (req, res, next) => {
 
 exports.findProductByNameAsync = async (req, res, next) => {
 	try {
-        const resServices = await productServices.findProductByNameAsync(req.value.body);
+        const resServices = await productServices.findProductByNameAsync(req.query.name);
         if(!resServices.success) {
             return controller.sendSuccess(res, {}, 404, resServices.message);
 		}

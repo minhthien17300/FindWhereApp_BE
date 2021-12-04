@@ -11,12 +11,12 @@ exports.addEvaluateAsync = async ( uID, body ) => {
         if (!evaluateHelper.checkComment(comment)) {
             if (!await evaluateHelper.autoBanUserAsync(uID)) {
                 return {
-                    message: "Bạn đã vi phạm nguyên tắc đánh giá của ReviewGame! Nếu còn cố tình tái phạm bạn sẽ bị khóa tài khoản!",
+                    message: "Bạn đã vi phạm nguyên tắc đánh giá của FindWhere! Nếu còn cố tình tái phạm bạn sẽ bị khóa tài khoản!",
                     success: false
                 }
             } else {
                 return {
-                    message: "Bạn đã bị khóa tài khoản do liên tục vi phạm nguyên tắc đánh giá của ReviewGame! Nếu có bất cứ thắc mắc nào xin liên hệ email: phamduylap123456@gmail.com",
+                    message: "Bạn đã bị khóa tài khoản do liên tục vi phạm nguyên tắc đánh giá của FindWhere! Nếu có bất cứ thắc mắc nào xin liên hệ email: phamduylap123456@gmail.com",
                     success: false
                 }
             }
@@ -54,12 +54,12 @@ exports.editEvaluateAsync = async ( uID, body ) => {
         if (!evaluateHelper.checkComment(comment)) {
             if (!await evaluateHelper.autoBanUserAsync(uID)) {
                 return {
-                    message: "Bạn đã vi phạm nguyên tắc đánh giá của ReviewGame! Nếu còn cố tình tái phạm bạn sẽ bị khóa tài khoản!",
+                    message: "Bạn đã vi phạm nguyên tắc đánh giá của FindWhere! Nếu còn cố tình tái phạm bạn sẽ bị khóa tài khoản!",
                     success: false
                 }
             } else {
                 return {
-                    message: "Bạn đã bị khóa tài khoản do liên tục vi phạm nguyên tắc đánh giá của ReviewGame! Nếu có bất cứ thắc mắc nào xin liên hệ email: phamduylap123456@gmail.com",
+                    message: "Bạn đã bị khóa tài khoản do liên tục vi phạm nguyên tắc đánh giá của FindWhere! Nếu có bất cứ thắc mắc nào xin liên hệ email: phamduylap123456@gmail.com",
                     success: false
                 }
             }

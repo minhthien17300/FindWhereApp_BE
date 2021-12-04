@@ -7,8 +7,9 @@ const ProductSchema = mongoose.Schema({
   name: defaultModel.stringR,
   price: defaultModel.number,
   types: defaultModel.array,
-  image: defaultModel.number,
-  score: defaultModel.number
+  images: defaultModel.array,
+  score: defaultModel.number,
+  isDeleted: defaultModel.booleanFalse
 });
 
 const Product = module.exports = mongoose.model('PRODUCT', ProductSchema, 'PRODUCT');

@@ -6,9 +6,18 @@ const schemas = {
 		confirmPassword: joi.string().required(),
 		name: joi.string().required(),
 		email: joi.string().email().required(),
-		phone: joi.string().required(),
+		phone: joi.string().length(10).pattern(/^[0-9]+$/).required(),
 		gender: joi.number(),
 		dateofBirth: joi.date()
+	}),
+	addEnterprise: joi.object().keys({
+		accountName: joi.string().required(),
+		name: joi.string().required(),
+		email: joi.string().email().required(),
+		phone: joi.string().length(10).pattern(/^[0-9]+$/).required(),
+		//location: joi.string(),
+		lat: joi.number(),
+		lng: joi.number(),
 	}),
 	login: joi.object().keys({
 		userName: joi.string().required(),
@@ -28,9 +37,16 @@ const schemas = {
 	changeInfo: joi.object().keys({
 		name: joi.string().required(),
 		email: joi.string().email().required(),
-		phone: joi.string().required(),
+		phone: joi.string().length(10).pattern(/^[0-9]+$/).required(),
 		gender: joi.number(),
 		dateofBirth: joi.date()
+	}),
+	changeEnterpriseInfo: joi.object().keys({
+		name: joi.string().required(),
+		email: joi.string().email().required(),
+		phone: joi.string().length(10).pattern(/^[0-9]+$/).required(),
+		lat: joi.number(),
+		lng: joi.number()
 	}),
 };
 module.exports = schemas;

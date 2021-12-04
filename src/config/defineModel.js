@@ -10,31 +10,24 @@ const defaultModel = {
     boolean: { type: Boolean, default: true },
     booleanFalse: { type: Boolean, default: false },
     object: { type: Object, default: {} },
-    stringImage: { type: String , default: ""},
+    stringImage: { type: String , default: "https://firebasestorage.googleapis.com/v0/b/findwhereapp-9f3ad.appspot.com/o/whotao_wa.png?alt=media&token=6e29082d-a02a-4930-92b8-dc228084367e"},
     stringEvaluate: { type: String, default: "Unknown" },
   };
   const defaultRoles = {
     User: 0,
-    Admin: 1
+    Admin: 1,
+    Enterprise: 2
   }
   
   const defaultGender = {
     Male: 0,
     Female: 1,
-    Unknown:2
+    Unknown:2,
   }
   
   const defaultStatus = {
     ACTIVE: true,
     BAN: false,
-  }
-
-  const defaultGameStatus = {
-    VeryPositive: "Very Positive",
-    Positive: "Positive",
-    Mixed: "Mixed",
-    Negative: "Negative",
-    VeryNegative: "Very Negative"
   }
   
   module.exports ={
@@ -42,5 +35,4 @@ const defaultModel = {
     defaultRoles,
     defaultGender,
     defaultStatus,
-    defaultGameStatus
   }

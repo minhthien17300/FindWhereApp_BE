@@ -2,10 +2,11 @@ const PRODUCT = require("../models/PRODUCT.model");
 const { string, array } = require('@hapi/joi');
 const { $where } = require("../models/PRODUCT.model");
 const { query } = require("express");
+const uploadImageHelper = require('../helper/uploadImage.helper');
 
-exports.addProductAsync = async body => {
+exports.addProductAsync = async (eID, body, images) => {
     try {
-        const { eID, name, price, types } = body;
+        const { name, price, types } = body;
         const productExist = await PRODUCT.findOne({ 
             eID: eID,
             name: name 
@@ -17,11 +18,14 @@ exports.addProductAsync = async body => {
             };
         };
 
+        const urlList = await uploadImageHelper.uploadImageAsync(images, name);
+
         const newProduct = new PRODUCT({
             eID: eID,
             name: name,
             price: price,
-            types: types
+            types: types,
+            images: urlList
         });
         await newProduct.save();
         return {
@@ -35,16 +39,20 @@ exports.addProductAsync = async body => {
 	}
 };
 
-exports.editProductAsync = async ( body ) => {
+exports.editProductAsync = async ( eID, body, images ) => {
     try {
-        const { id, eID, name, price, types } = body;
+        const { id, name, price, types } = body;
+
+        const urlList = await uploadImageHelper.uploadImageAsync(images, name);
+
         const product = await PRODUCT.findOneAndUpdate(
 			{ _id: id },
 			{ 
                 eID: eID,
 				name: name,
 				price: price,
-				types: types
+				types: types,
+                images: urlList
 			},
 			{ new: true }
 		);
@@ -127,9 +135,8 @@ exports.getProductDetailAsync = async (id) => {
 	}
 }
 
-exports.findProductByNameAsync = async body => {
+exports.findProductByNameAsync = async (name) => {
     try {
-        const { name } = body;
         var nameRegex = new RegExp(name)
         const products = await PRODUCT.find({name :{$regex: nameRegex, $options: 'i'}});
         if(products.length == 0) {
