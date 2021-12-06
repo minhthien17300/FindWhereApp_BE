@@ -10,7 +10,7 @@ const { string } = require('@hapi/joi');
 
 exports.registerUserAsync = async body => {
 	try {
-		const { userName, userPwd, confirmPassword, name, email, phone, gender, dateofBirth } = body;
+		const { userName, userPwd, confirmPassword, name, email } = body;
 		//kiểm tra xem đã có email trong database chưa
 		const emailExist = await USER.findOne({
 			email: email
@@ -39,14 +39,13 @@ exports.registerUserAsync = async body => {
         //mã hóa password
 		const hashedPassword = await bcrypt.hash(userPwd, 8);
         //lưu user
+		var curDate = new Date();
 		const newUser = new USER({
 			userName: userName,
 			userPwd: hashedPassword,
             name: name,
             email: email,
-			phone: phone,
-			gender: gender,
-			dateofBirth: dateofBirth
+			dateofBirth: curDate
 		});
 		await newUser.save();
 		return {

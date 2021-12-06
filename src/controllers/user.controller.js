@@ -168,7 +168,7 @@ exports.findUserByTokenAsync = async (req, res, next) => {
 		return controller.sendSuccess(
 			res,
 			resServices.data,
-			302,
+			200,
 			resServices.message
 		);
 	} catch (error) {
