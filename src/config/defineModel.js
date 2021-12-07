@@ -3,7 +3,7 @@ const defaultModel = {
     string: { type: String, default: "" },
     stringR: { type: String, required: true },
     stringRef: { type: String, required: true, match: /^[a-fA-F0-9]{24}$/ },
-    stringPhone: { type: String, required: true, match: /^0\d{9}$/, default: '' },
+    stringPhone: { type: String, required: true, match: /^0\d{9}$/, default: "" },
     stringUnique: { type: String, required: true, unique: true },
     array: { type: Array, default: [] },
     number: { type: Number, default: 0 },
