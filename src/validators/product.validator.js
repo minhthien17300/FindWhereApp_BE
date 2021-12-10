@@ -1,14 +1,12 @@
 const joi = require('@hapi/joi');
 const schemas = {
 	addProduct: joi.object().keys({
-		eID: joi.string().required(),
 		name: joi.string().required(),
 		price: joi.string().required(),
 		types: joi.array().required(),
 	}),
 	editProduct: joi.object().keys({
 		id: joi.string().required(),
-		eID: joi.string().required(),
 		name: joi.string().required(),
 		price: joi.string().required(),
 		types: joi.array().required(),
