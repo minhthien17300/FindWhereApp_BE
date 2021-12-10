@@ -38,7 +38,7 @@ exports.registerAsync = async (req, res, next) => {
 				controller.sendSuccess(
 					res,
 					resServices.data,
-					201,
+					200,
 					resServices.message
 				);
 			}
@@ -83,7 +83,7 @@ exports.addEnterpriseAsync = async (req, res, next) => {
 				controller.sendSuccess(
 					res,
 					resServices.data,
-					201,
+					200,
 					resServices.message
 				);
 			}

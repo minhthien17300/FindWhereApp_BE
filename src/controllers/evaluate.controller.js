@@ -13,7 +13,7 @@ exports.addEvaluateAsync = async (req, res, next) => {
 		return controller.sendSuccess(
 			res,
 			resServices.data,
-			201,
+			200,
 			resServices.message
 		);
     } catch (err) {

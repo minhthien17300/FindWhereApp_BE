@@ -12,7 +12,7 @@ exports.addProductAsync = async (req, res, next) => {
 		return controller.sendSuccess(
 			res,
 			resServices.data,
-			201,
+			200,
 			resServices.message
 		);
     } catch (err) {
@@ -68,7 +68,7 @@ exports.findProductByTypeAsync = async (req, res, next) =>{
 		return controller.sendSuccess(
 			res,
 			resServices.data,
-			302,
+			200,
 			resServices.message
 		);
     } catch (err) {
@@ -86,7 +86,7 @@ exports.getALLProductAsync = async (req, res, next) =>{
 		return controller.sendSuccess(
 			res,
 			resServices,
-			302
+			200
 		);
     } catch (err) {
 		console.log(err);
@@ -103,7 +103,7 @@ exports.getProductDetailAsync = async (req, res, next) => {
 		return controller.sendSuccess(
 			res,
 			resServices,
-			302
+			200
 		);
     } catch (err) {
 		console.log(err);
@@ -120,7 +120,7 @@ exports.findProductByNameAsync = async (req, res, next) => {
 		return controller.sendSuccess(
 			res,
 			resServices.data,
-			302,
+			200,
 			resServices.message
 		);
     } catch (err) {
