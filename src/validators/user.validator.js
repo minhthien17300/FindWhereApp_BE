@@ -8,7 +8,7 @@ const schemas = {
 		email: joi.string().email().required(),
 	}),
 	addEnterprise: joi.object().keys({
-		accountName: joi.string().required(),
+		userName: joi.string().required(),
 		name: joi.string().required(),
 		email: joi.string().email().required(),
 		phone: joi.string().length(10).pattern(/^[0-9]+$/).required(),

@@ -84,7 +84,7 @@ exports.addEnterpriseAsync = async body => {
                 success: false
             }
         //mã hóa password
-		const hashedPassword = await bcrypt.hash(12345, 8);
+		const hashedPassword = await bcrypt.hash("12345", 8);
 
 		//lưu lại ngày tạo
 		var curDate = new Date();
