@@ -21,6 +21,7 @@ router.post('/banUser', jwtServices.verify, verifyHelper.checkRole([defaultRoles
 router.post('/unbanUser', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin]), Controller.unbanUserAsync)
 router.get('/getALLUser', Controller.getALLUserAsync);
 router.get('/getALLEnterprise', Controller.getALLEnterpriseAsync);
+router.get('/getEnterpriseByID', Controller.getEnterpriseByIDAsync);
 
 
 module.exports = router

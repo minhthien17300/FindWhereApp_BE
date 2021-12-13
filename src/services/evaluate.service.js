@@ -99,7 +99,7 @@ exports.deleteEvaluateAsync = async (uID, pID) => {
 	}
 }
 
-exports.getEvaluateOfGameAsync = async (pID) => {
+exports.getEvaluateOfProductAsync = async (pID) => {
     try {
         const evaluates = await EVALUATE.find({ pID: pID });
         return {

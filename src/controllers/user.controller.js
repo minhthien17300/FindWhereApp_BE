@@ -341,3 +341,19 @@ exports.getALLEnterpriseAsync = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 };
+
+exports.getEnterpriseByIDAsync = async (req, res, next) => {
+	try {
+		const resServices = await userServices.getEnterpriseByIDAsync(req.query.id);
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (error) {
+		// bug
+		console.log(error);
+		return controller.sendError(res);
+	}
+};

@@ -156,3 +156,24 @@ exports.findProductByNameAsync = async (name) => {
 		return null;
 	}
 }
+
+exports.getProductSortAsync = async () => {
+    try {
+        const products = await PRODUCT.find({isDeleted: false}).sort({score: -1});
+        return products;
+    } catch (err) {
+		console.log(err);
+		return null;
+	}
+};
+
+exports.getEnterpriseProductSortAsync = async (id) => {
+    try {
+        const products = await PRODUCT.find({isDeleted: false, eID: id}).sort({score: -1});
+        console.log(products);
+        return products;
+    } catch (err) {
+		console.log(err);
+		return null;
+	}
+};

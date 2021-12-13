@@ -27,5 +27,8 @@ router.get('/findProductByType', Validate.body(SchemaValidateProduct.findProduct
 router.get('/getALLProduct', Controller.getALLProductAsync)
 router.get('/getProductDetail', Controller.getProductDetailAsync)
 router.get('/findProductByName', Validate.body(SchemaValidateProduct.findProductByName), Controller.findProductByNameAsync)
+router.get('/getProductSort', Controller.getProductSortAsync)
+router.get('/getEnterpriseProductSort', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getEnterpriseProductSortAsync)
+
 
 module.exports = router

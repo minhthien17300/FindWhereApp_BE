@@ -62,9 +62,9 @@ exports.deleteEvaluateAsync = async (req, res, next) => {
 	}
 }
 
-exports.getEvaluateOfGameAsync = async (req, res, next) => {
+exports.getEvaluateOfProductAsync = async (req, res, next) => {
 	try {
-        const resServices = await evaluateServices.getEvaluateOfGameAsync(req.body.gID);
+        const resServices = await evaluateServices.getEvaluateOfProductAsync(req.query.gID);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 404, resServices.message);
 		}

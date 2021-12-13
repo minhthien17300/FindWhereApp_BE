@@ -337,7 +337,7 @@ exports._findEnterpriseByRoleAsync = async () => {
 
 exports.changeInfoAsync = async (id, body) => {
 	try {
-		const { name, email, phone, gender, dateofBirth } = body;
+		const { name, email, phone, gender, dateofBirth, lat, lng } = body;
 		const user = await USER.findOneAndUpdate(
 			{ _id: id },
 			{ 
@@ -345,7 +345,9 @@ exports.changeInfoAsync = async (id, body) => {
 				email: email,
 				phone: phone,
 				gender: gender,
-				dateofBirth: dateofBirth
+				dateofBirth: dateofBirth,
+				lat: lat,
+				lng: lng
 			},
 			{ new: true }
 		);
@@ -510,3 +512,15 @@ exports.getALLEnterpriseAsync = async () => {
 		};
 	}
 }
+
+exports.getEnterpriseByIDAsync = async (id) => {
+	try {
+		const user = await USER.findById({
+			_id: id
+		});
+		return user;
+	} catch (err) {
+		console.log(err);
+		return null;
+	}
+};
