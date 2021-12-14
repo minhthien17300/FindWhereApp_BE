@@ -347,9 +347,8 @@ exports.getEnterpriseByIDAsync = async (req, res, next) => {
 		const resServices = await userServices.getEnterpriseByIDAsync(req.query.id);
 		return controller.sendSuccess(
 			res,
-			resServices.data,
-			200,
-			resServices.message
+			resServices,
+			200
 		);
 	} catch (error) {
 		// bug

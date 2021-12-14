@@ -372,13 +372,15 @@ exports.changeInfoAsync = async (id, body) => {
 
 exports.changeEnterpriseInfoAsync = async (id, body) => {
 	try {
-		const { name, email, phone, lat, lng } = body;
+		const { name, phone, gender, dateofBirth,lat, lng } = body;
 		const user = await USER.findOneAndUpdate(
 			{ _id: id },
 			{ 
 				name: name,
-				email: email,
+				//email: email,
 				phone: phone,
+				gender: gender,
+				dateofBirth: dateofBirth,
 				lat: lat,
 				lng: lng
 			},
@@ -513,9 +515,7 @@ exports.getALLEnterpriseAsync = async () => {
 
 exports.getEnterpriseByIDAsync = async (id) => {
 	try {
-		const user = await USER.findById({
-			_id: id
-		});
+		const user = await USER.findById({ _id: id });
 		return user;
 	} catch (err) {
 		console.log(err);
