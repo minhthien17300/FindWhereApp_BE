@@ -11,11 +11,11 @@ const schemas = {
 		price: joi.string().required(),
 		types: joi.array().required(),
 	}),
-	findProductByType: joi.object().keys({
+	/* findProductByType: joi.object().keys({
         types: joi.array().required()
     }),
 	findProductByName: joi.object().keys({
 		name: joi.string().required()
-	}),
+	}), */
 };
 module.exports = schemas;

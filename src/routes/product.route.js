@@ -23,10 +23,10 @@ var cpUpload = upload.fields([{ name: 'images', maxCount: 100 }]);
 router.post('/addProduct', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), cpUpload, Validate.body(SchemaValidateProduct.addProduct), Controller.addProductAsync)
 router.post('/editProduct', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), cpUpload, Validate.body(SchemaValidateProduct.editProduct), Controller.editProductAsync)
 router.post('/deleteProduct', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.deleteProductAsync)
-router.get('/findProductByType', Validate.body(SchemaValidateProduct.findProductByType), Controller.findProductByTypeAsync)
+router.get('/findProductByType', Controller.findProductByTypeAsync)
 router.get('/getALLProduct', Controller.getALLProductAsync)
 router.get('/getProductDetail', Controller.getProductDetailAsync)
-router.get('/findProductByName', Validate.body(SchemaValidateProduct.findProductByName), Controller.findProductByNameAsync)
+router.get('/findProductByName', Controller.findProductByNameAsync)
 router.get('/getProductSort', Controller.getProductSortAsync)
 router.get('/getEnterpriseProductSort', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getEnterpriseProductSortAsync)
 
