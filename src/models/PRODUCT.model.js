@@ -6,6 +6,7 @@ const ProductSchema = mongoose.Schema({
   eID: defaultModel.stringR,
   name: defaultModel.stringR,
   price: defaultModel.number,
+  description: defaultModel.string,
   types: defaultModel.array,
   images: defaultModel.array,
   score: defaultModel.number,

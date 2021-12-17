@@ -6,7 +6,7 @@ const uploadImageHelper = require('../helper/uploadImage.helper');
 
 exports.addProductAsync = async (eID, body, images) => {
     try {
-        const { name, price, types } = body;
+        const { name, price, types, description } = body;
         const productExist = await PRODUCT.findOne({ 
             eID: eID,
             name: name 
@@ -24,6 +24,7 @@ exports.addProductAsync = async (eID, body, images) => {
             eID: eID,
             name: name,
             price: price,
+            description: description,
             types: types,
             images: urlList
         });
@@ -41,7 +42,7 @@ exports.addProductAsync = async (eID, body, images) => {
 
 exports.editProductAsync = async ( eID, body, images ) => {
     try {
-        const { id, name, price, types } = body;
+        const { id, name, price, types, description } = body;
 
         const urlList = await uploadImageHelper.uploadImageAsync(images, name);
 
@@ -51,6 +52,7 @@ exports.editProductAsync = async ( eID, body, images ) => {
                 eID: eID,
 				name: name,
 				price: price,
+                description: description,
 				types: types,
                 images: urlList
 			},
@@ -77,7 +79,7 @@ exports.editProductAsync = async ( eID, body, images ) => {
 
 exports.deleteProductAsync = async (id) => {
     try {
-        const product = await PRODUCT.deleteOne({ _id: id });
+        const product = await PRODUCT.findOneAndUpdate({ _id: id }, {isDeleted: true});
 		return {
             message: "Xóa thành công!",
             success: true,
