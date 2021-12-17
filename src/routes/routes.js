@@ -10,7 +10,7 @@ const router = express.Router()
 router.use('/user', userRoute)
 router.use('/product', productRoute)
 router.use('/evaluate', evaluateRoute)
-router.use('./type', typeRoute)
+router.use('/type', typeRoute)
 
 
 
