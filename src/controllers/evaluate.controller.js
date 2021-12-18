@@ -84,7 +84,7 @@ exports.getUserEvaluateAsync = async (req, res, next) => {
 	try {
 		const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
-        const resServices = await evaluateServices.getUserEvaluateAsync(id, req.body.gID);
+        const resServices = await evaluateServices.getUserEvaluateAsync(id, req.query.pID);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 404, resServices.message);
 		}
