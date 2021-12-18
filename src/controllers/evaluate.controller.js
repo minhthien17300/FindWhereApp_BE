@@ -102,7 +102,7 @@ exports.getUserEvaluateAsync = async (req, res, next) => {
 
 exports.evaluateFilterAsync = async (req, res, next) => {
 	try {
-        const resServices = await evaluateServices.evaluateFilterAsync(req.value.body);
+        const resServices = await evaluateServices.evaluateFilterAsync(req.query.body);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 404, resServices.message);
 		}
