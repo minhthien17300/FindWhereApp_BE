@@ -27,10 +27,12 @@ exports.addEvaluateAsync = async ( uID, body ) => {
                 success: false
             }
         }
+        var userName = await evaluateHelper.getUserNameByIdAsync(uID);
         var curDate = new Date();
         const newEvaluate = new EVALUATE({
             uID: uID,
             pID: pID,
+            name: userName,
             score: score,
             comment: comment,
             dateEvaluate: curDate
