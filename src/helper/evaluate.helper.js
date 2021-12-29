@@ -21,7 +21,7 @@ exports.scoreCalculatorAsync = async (pID) => {
             for (var evaluate of evaluates) {
                 score = score + evaluate.score;
             }
-            avgScore = score/evaluates.length;
+            avgScore = Math.round((score/evaluates.length)*100)/100;
         }
         await PRODUCT.findOneAndUpdate(
                 { _id: pID },
