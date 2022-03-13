@@ -14,9 +14,11 @@ const UserSchema = mongoose.Schema({
   lng: defaultModel.number,
   dateofBirth: defaultModel.date,
   role: defaultModel.number,
+  searchHistory: defaultModel.array,
+  orderHistory: defaultModel.array,
   otp: defaultModel.string,
   isWarned: defaultModel.number,
-  isActived: defaultModel.boolean
+  isActived: defaultModel.booleanFalse
 });
 
 const User = module.exports = mongoose.model('USERINFO', UserSchema, 'USERINFO');

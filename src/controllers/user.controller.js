@@ -8,44 +8,82 @@ const controller = require("./message.controller");
 exports.registerAsync = async (req, res, next) => {
 	try {
 		const resServices = await userServices.registerUserAsync(req.value.body);
-		var smtpTransport = await nodemailer.createTransport({
-			service: "gmail", //smtp.gmail.com  //in place of service use host...
-			secure: false, //true
-			port: 25, //465
-			auth: {
-				user: configEnv.Email,
-				pass: configEnv.Password
-			},
-			tls: {
-				rejectUnauthorized: false,
-			},
-		});
-		const mailOptions = {
-			to: resServices.email,
-			from: configEnv.Email,
-			subject: 'Đăng ký tài khoản FindWhere thành công!',
-			text: 'Chân thành cảm ơn bạn đã sử dụng ứng dụng, chúc bạn vui vẻ!'
-		};
-		smtpTransport.sendMail(mailOptions, function (error, response) {
-			if (error) {
-				return controller.sendSuccess(
-					res,
-					resServices.data,
-					400,
-					resServices.message
-				);
-			} else {
-				controller.sendSuccess(
-					res,
-					resServices.data,
-					200,
-					resServices.message
-				);
-			}
-		});
+		// var smtpTransport = await nodemailer.createTransport({
+		// 	service: "gmail", //smtp.gmail.com  //in place of service use host...
+		// 	secure: false, //true
+		// 	port: 25, //465
+		// 	auth: {
+		// 		user: configEnv.Email,
+		// 		pass: configEnv.Password
+		// 	},
+		// 	tls: {
+		// 		rejectUnauthorized: false,
+		// 	},
+		// });
+		// const mailOptions = {
+		// 	to: resServices.email,
+		// 	from: configEnv.Email,
+		// 	subject: 'Đăng ký tài khoản FindWhere thành công!',
+		// 	text: 'Chân thành cảm ơn bạn đã sử dụng ứng dụng, chúc bạn vui vẻ!'
+		// };
+		// smtpTransport.sendMail(mailOptions, function (error, response) {
+		// 	if (error) {
+		// 		return controller.sendSuccess(
+		// 			res,
+		// 			resServices.data,
+		// 			400,
+		// 			resServices.message
+		// 		);
+		// 	} else {
+		// 		controller.sendSuccess(
+		// 			res,
+		// 			resServices.data,
+		// 			200,
+		// 			resServices.message
+		// 		);
+		// 	}
+		// });
 
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
 	} catch (err) {
 		console.log(err);
+		return controller.sendError(res);
+	}
+};
+
+exports.confirmUnlockAsync = async (req, res, next) => {
+	try {
+		const resServices = await userServices.confirmUnlockAsync(req.value.body);
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (error) {
+		console.log(error);
 		return controller.sendError(res);
 	}
 };
@@ -345,6 +383,47 @@ exports.getALLEnterpriseAsync = async (req, res, next) => {
 exports.getEnterpriseByIDAsync = async (req, res, next) => {
 	try {
 		const resServices = await userServices.getEnterpriseByIDAsync(req.query.id);
+		return controller.sendSuccess(
+			res,
+			resServices,
+			200
+		);
+	} catch (error) {
+		// bug
+		console.log(error);
+		return controller.sendError(res);
+	}
+};
+
+exports.addSearchHistoryAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await userServices.addSearchHistoryAsync(id, req.value.body);
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.success,
+			200,
+			resServices.message
+		);
+	} catch (error) {
+		return controller.sendError(res);
+	}
+};
+
+exports.getSearchHistoryAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await userServices.getSearchHistoryAsync(id);
 		return controller.sendSuccess(
 			res,
 			resServices,

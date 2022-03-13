@@ -10,8 +10,9 @@ const { defaultRoles } = require('../config/defineModel')
 
 router.post('/login', Validate.body(SchemaValidateUser.login), Controller.loginAsync)
 router.post('/register', Validate.body(SchemaValidateUser.register), Controller.registerAsync)
+router.post('/confirmUnlock', Validate.body(SchemaValidateUser.confirmUnlock), Controller.confirmUnlockAsync)
 router.post('/addEnterprise', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin]), Validate.body(SchemaValidateUser.addEnterprise), Controller.addEnterpriseAsync)
-router.post('/changePassword', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User]), Validate.body(SchemaValidateUser.changePass), Controller.changePasswordAsync)
+router.post('/changePassword', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User, defaultRoles.Enterprise]), Validate.body(SchemaValidateUser.changePass), Controller.changePasswordAsync)
 router.get('/forgotPassword', Controller.forgotPasswordAsync)
 router.post('/resetPassword', Validate.body(SchemaValidateUser.resetPassword), Controller.resetPasswordAsync)
 router.get('/findUserByToken', jwtServices.verify, Controller.findUserByTokenAsync)
@@ -22,6 +23,8 @@ router.post('/unbanUser', jwtServices.verify, verifyHelper.checkRole([defaultRol
 router.get('/getALLUser', Controller.getALLUserAsync);
 router.get('/getALLEnterprise', Controller.getALLEnterpriseAsync);
 router.get('/getEnterpriseByID', Controller.getEnterpriseByIDAsync);
+router.get('/addSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateUser.addSearchHistory), Controller.addSearchHistoryAsync)
+router.get('/getSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSearchHistoryAsync)
 
 
 module.exports = router

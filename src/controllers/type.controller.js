@@ -18,3 +18,21 @@ exports.getALLTypeAsync = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 }
+
+exports.addTypeAsync = async (req, res, next) => {
+	try {
+		const resServices = await typeServices.addTypeAsync(req.body);
+        if (resServices.length == 0) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}

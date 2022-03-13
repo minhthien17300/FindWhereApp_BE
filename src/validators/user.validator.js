@@ -7,6 +7,10 @@ const schemas = {
 		name: joi.string().required(),
 		email: joi.string().email().required(),
 	}),
+	confirmUnlock: joi.object().keys({
+		email: joi.string().email().required(),
+		otp: joi.string().required()
+	}),
 	addEnterprise: joi.object().keys({
 		userName: joi.string().required(),
 		name: joi.string().required(),
@@ -46,6 +50,11 @@ const schemas = {
 		dateofBirth: joi.date(),
 		lat: joi.number(),
 		lng: joi.number()
+	}),
+	addSearchHistory: joi.object().keys({
+		pID: joi.string().required(),
+		pName: joi.string().required(),
+		pPrice: joi.number()
 	}),
 };
 module.exports = schemas;

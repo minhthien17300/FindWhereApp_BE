@@ -2,7 +2,6 @@ const EVALUATE = require('../models/EVALUATE.model');
 const PRODUCT = require('../models/PRODUCT.model');
 const USER = require('../models/USERINFO.model');
 const {DontSayTheseWords} = require('../config/config');
-const {defaultGameStatus} = require('../config/defineModel');
 
 exports.checkComment = (comment) => {
     var cmt = new String(comment).toLowerCase();

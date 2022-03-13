@@ -98,7 +98,7 @@ exports.findProductByTypeAsync = async body => {
         const { types } = body;
         const products = await PRODUCT.find({
             types: { $in: types }
-        });
+        }).sort({score: -1});
         if(products.length != 0) {
             return {
             message: "Danh sách product!",
@@ -140,7 +140,7 @@ exports.getProductDetailAsync = async (id) => {
 exports.findProductByNameAsync = async (name) => {
     try {
         var nameRegex = new RegExp(name)
-        const products = await PRODUCT.find({name :{$regex: nameRegex, $options: 'i'}});
+        const products = await PRODUCT.find({name :{$regex: nameRegex, $options: 'i'}}).sort({score: -1});
         if(products.length == 0) {
             return {
                 message: "Không tìm thấy Product!",

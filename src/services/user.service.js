@@ -38,6 +38,14 @@ exports.registerUserAsync = async body => {
 		};
         //mã hóa password
 		const hashedPassword = await bcrypt.hash(userPwd, 8);
+
+		//tạo otp
+		var otp = await otpGenerator.generate(5, {
+			upperCase: false,
+			specialChars: false,
+			alphabets: false
+		});
+		
         //lưu user
 		var curDate = new Date();
 		const newUser = new USER({
@@ -45,18 +53,76 @@ exports.registerUserAsync = async body => {
 			userPwd: hashedPassword,
             name: name,
             email: email,
-			dateofBirth: curDate
+			dateofBirth: curDate,
+			otp: otp
 		});
 		await newUser.save();
-		return {
-			message: 'Đăng ký thành công',
-			success: true,
-			email: email
-		};
+		if (newUser != null) {
+			const mailOptions = {
+				to: newUser.email,
+				from: configEnv.Email,
+				subject: 'Chào mừng bạn đến với FindWhere!',
+				text:   'Bạn đã đăng ký thành công tài khoản trên ứng dụng FindWhere!\n'+
+						'Chỉ một bước đơn giản nữa là bạn đã có thể tiếp cận toàn bộ tính năng của ứng dụng!\n'+
+						'Mời bạn vui lòng nhập mã OTP được gửi kèm mail này để kích hoạt tài khoản!\n'+
+						'Mã OTP của bạn là: ' + newUser.otp
+			};
+			const resultSendMail = await sendMail(mailOptions);
+			console.log(resultSendMail);
+			if (!resultSendMail) {
+				return {
+					message: 'Gửi mail không thành công!',
+					success: false
+				};
+			} else {
+				return {
+					message: 'Gửi mail thành công! Vui lòng kiểm tra email để nhận mã otp!',
+					success: true
+				};
+			}
+		} else {
+			return {
+				message: 'Oops! Có lỗi xảy ra trong quá trình đăng ký!',
+				success: false
+			};
+		}
 	} catch (err) {
 		console.log(err);
 		return {
 			error: 'Internal Server Error',
+			success: false
+		};
+	}
+};
+
+exports.confirmUnlockAsync = async body => {
+	try {
+		const { email, otp } = body;
+		let user = await USER.findOne({ email: email });
+		if (user != null) {
+			if (otp == user.otp) {
+				user.isActived = true;
+				user.otp = "";
+				user.save();
+				return {
+					message: 'Mở khóa tài khoản thành công!',
+					success: true
+				};
+			} else {
+				return {
+					message: 'Sai mã OTP!',
+					success: false
+				};
+			}
+		} else {
+			return {
+				message: 'Sai email đăng nhập!',
+				success: false
+			};
+		}
+	} catch (error) {
+		return {
+			message: 'Oops! Có lỗi xảy ra!' + error,
 			success: false
 		};
 	}
@@ -522,3 +588,57 @@ exports.getEnterpriseByIDAsync = async (id) => {
 		return null;
 	}
 };
+
+exports.addSearchHistoryAsync = async (uID, body) => {
+	try {
+		const { pID, pName, pPrice } = body;
+		const user = await USER.findById({ _id: uID });
+		if(user == null) {
+			return {
+				message: 'Oops! Có lỗi xảy ra!',
+				success: false
+			}
+		}
+		let product = {
+			pID: pID,
+			pName: pName,
+			pPrice: pPrice
+		}
+		user.searchHistory.push(product);
+		if(user.searchHistory.length > 20) {
+			user.searchHistory.shift();
+		}
+		user.save();
+
+	} catch (err) {
+		console.log(err)
+		return {
+			message: 'Oops! Có lỗi xảy ra!',
+			success: false
+		};
+	}
+}
+
+exports.getSearchHistoryAsync = async (id) => {
+	try {
+		const user = await USER.findById({ _id: id });
+		if(user==null) {
+			return {
+				message: 'Oops! Có lỗi xảy ra!',
+				success: false
+			};
+		}
+		let history = Array.of(...user.searchHistory);
+		return {
+			message: 'Lịch sử tìm kiếm',
+			success: true,
+			data: history.reverse()
+		}
+	} catch (err) {
+		console.log(err)
+		return {
+			message: 'Oops! Có lỗi xảy ra!',
+			success: false
+		};
+	}
+}
