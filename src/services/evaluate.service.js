@@ -1,5 +1,5 @@
 const EVALUATE = require('../models/EVALUATE.model');
-const evaluateHelper = require('../helper/evaluate.helper');
+const evaluateHelper = require('../helpers/evaluate.helper');
 
 exports.addEvaluateAsync = async ( uID, body ) => {
     try {

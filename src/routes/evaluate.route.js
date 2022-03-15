@@ -4,7 +4,7 @@ const SchemaValidateEvaluate = require("../validators/evaluate.validator")
 const router = express.Router()
 const Validate = require("../validators")
 const jwtServices = require("../services/jwt.service")
-const verifyHelper = require('../helper/verifyUser.helper')
+const verifyHelper = require('../helpers/verifyUser.helper')
 const { defaultRoles } = require('../config/defineModel')
 
 router.post('/addEvaluate', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User]), Validate.body(SchemaValidateEvaluate.addEvaluate), Controller.addEvaluateAsync)

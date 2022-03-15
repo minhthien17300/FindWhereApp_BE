@@ -12,4 +12,3 @@ exports.calculateTotalPriceAfterDiscountAmountAsync = async (id, totalPrice) => 
 
     return bill;
 }
-

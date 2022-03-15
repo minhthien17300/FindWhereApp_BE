@@ -143,7 +143,7 @@ exports.useDiscountAsync = async (uID, dID) => {
             uID: uID,
             usedDate: curDate
         });
-        usedDiscount.save();
+        await usedDiscount.save();
 
         return {
             message: "Sử dụng giảm giá thành công!",

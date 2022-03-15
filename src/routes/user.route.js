@@ -4,7 +4,7 @@ const SchemaValidateUser = require("../validators/user.validator")
 const router = express.Router()
 const Validate = require("../validators")
 const jwtServices = require("../services/jwt.service")
-const verifyHelper = require('../helper/verifyUser.helper')
+const verifyHelper = require('../helpers/verifyUser.helper')
 const { defaultRoles } = require('../config/defineModel')
 
 

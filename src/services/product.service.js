@@ -2,7 +2,7 @@ const PRODUCT = require("../models/PRODUCT.model");
 const { string, array } = require('@hapi/joi');
 const { $where } = require("../models/PRODUCT.model");
 const { query } = require("express");
-const uploadImageHelper = require('../helper/uploadImage.helper');
+const uploadImageHelper = require('../helpers/uploadImage.helper');
 
 exports.addProductAsync = async (eID, body, images) => {
     try {

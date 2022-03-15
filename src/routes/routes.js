@@ -4,6 +4,7 @@ const productRoute = require('./product.route')
 const evaluateRoute = require('./evaluate.route')
 const typeRoute = require('./type.route')
 const discountRoute = require('./discount.route')
+const cartRoute = require('./cart.route')
 
 
 
@@ -13,10 +14,11 @@ router.use('/product', productRoute)
 router.use('/evaluate', evaluateRoute)
 router.use('/type', typeRoute)
 router.use('/discount', discountRoute)
+router.use('/cart', cartRoute)
 
 
 
 
-router.get('/healCheck', (req, res) => res.status(200).send('Welcome to FindWhere'))
+router.get('/*', (req, res) => res.status(200).send('Welcome to FindWhere'))
 
 module.exports = router

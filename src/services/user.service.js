@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 const { sendMail } = require('./sendMail.service');
 const otpGenerator = require('otp-generator');
 const { string } = require('@hapi/joi');
+const cartHelper = require('../helpers/cart.helper')
 
 exports.registerUserAsync = async body => {
 	try {
@@ -103,7 +104,15 @@ exports.confirmUnlockAsync = async body => {
 			if (otp == user.otp) {
 				user.isActived = true;
 				user.otp = "";
-				user.save();
+				await user.save();
+				const newCart = await cartHelper.creatNewCartAsync(user._id);
+				if(!newCart.success) {
+					return {
+						message: newCart.message,
+						success: false
+					}
+				}
+				
 				return {
 					message: 'Mở khóa tài khoản thành công!',
 					success: true
