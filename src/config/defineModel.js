@@ -16,7 +16,8 @@ const defaultModel = {
   const defaultRoles = {
     User: 0,
     Admin: 1,
-    Enterprise: 2
+    Enterprise: 2,
+    Shipper: 3
   }
   
   const defaultGender = {

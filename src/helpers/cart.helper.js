@@ -17,3 +17,35 @@ exports.creatNewCartAsync = async(uID) => {
         }
     }
 }
+
+exports.clearCartItemsAsync = async(uID) => {
+    try {
+        const cart = await CART.findOneAndUpdate(
+            { userID: uID },
+            {
+                cartDetail: [],
+                totalPrice: 0
+            },
+            { new: true }
+        );
+
+        if (cart == null) {
+            return {
+                message: "Oops! Có lỗi xảy ra",
+                success: false
+            }
+        }
+
+        return {
+            message: "success",
+            success: true
+        }
+
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Oops! Có lỗi xảy ra!",
+            success: false
+        }
+    }
+}

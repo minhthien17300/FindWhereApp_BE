@@ -1,5 +1,6 @@
 const ORDER = require('../models/ORDER.model');
 const orderHelper = require('../helpers/order.helper')
+const cartHelper = require('../helpers/cart.helper')
 
 exports.getOrderByDateAsync = async(uID, sortType) => {
     try {
@@ -138,11 +139,19 @@ exports.confirmOrderAsync = async(oID, type) => {
             order.isConfirm = true;
             await order.save();
             sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 1)
+            clearCartService = await cartHelper.clearCartItemsAsync(order.userID)
         } else {
             sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 2)
         }
 
         if(!sendMailService.success) {
+            return {
+                message: "Oops! Có lỗi xảy ra",
+                success: false
+            }
+        }
+
+        if(!clearCartService.success) {
             return {
                 message: "Oops! Có lỗi xảy ra",
                 success: false
