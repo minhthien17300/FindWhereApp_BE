@@ -1,7 +1,7 @@
 const DISCOUNT = require('../models/DISCOUNT.model');
 const USER = require('../models/USERINFO.model')
 const nodemailer = require('nodemailer');
-const { sendMail } = require('./sendMail.service');
+const { sendMail } = require('../services/sendMail.service');
 
 
 exports.calculateTotalPriceAfterDiscountAmountAsync = async (id, totalPrice) => {
@@ -71,7 +71,7 @@ exports.sendMailToCustomerAsync = async (uID, type) => {
                 success: false
             }
         }
-
+        
         var text;
         //type = 0 means reject
         if(type == 0) {

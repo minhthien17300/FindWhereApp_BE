@@ -8,6 +8,7 @@ const { sendMail } = require('./sendMail.service');
 const otpGenerator = require('otp-generator');
 const { string } = require('@hapi/joi');
 const cartHelper = require('../helpers/cart.helper')
+const localStorageService = require('./localStorage.service');
 
 exports.registerUserAsync = async body => {
 	try {
@@ -57,7 +58,8 @@ exports.registerUserAsync = async body => {
 			dateofBirth: curDate,
 			otp: otp
 		});
-		await newUser.save();
+		await localStorageService.addUserAsync(newUser);
+
 		if (newUser != null) {
 			const mailOptions = {
 				to: newUser.email,
@@ -76,6 +78,7 @@ exports.registerUserAsync = async body => {
 					success: false
 				};
 			} else {
+				//await newUser.save();
 				return {
 					message: 'Gửi mail thành công! Vui lòng kiểm tra email để nhận mã otp!',
 					success: true
@@ -99,12 +102,23 @@ exports.registerUserAsync = async body => {
 exports.confirmUnlockAsync = async body => {
 	try {
 		const { email, otp } = body;
-		let user = await USER.findOne({ email: email });
-		if (user != null) {
-			if (otp == user.otp) {
-				user.isActived = true;
-				user.otp = "";
+		//let user = await USER.findOne({ email: email });
+		var tempUser = await localStorageService.getUserAsync(email);
+		var user = new USER({
+			userName: tempUser.userName,
+			userPwd: tempUser.userPwd,
+            name: tempUser.name,
+            email: tempUser.email,
+			dateofBirth: tempUser.dateofBirth,
+			otp: "",
+			isActived: true,
+		});
+		if (tempUser != null) {
+			if (otp == tempUser.otp) {
+				//user.isActived = true;
+				//user.otp = "";
 				await user.save();
+				await localStorageService.deleteUserAsync(email);
 				const newCart = await cartHelper.creatNewCartAsync(user._id);
 				if(!newCart.success) {
 					return {
