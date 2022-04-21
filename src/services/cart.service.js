@@ -56,10 +56,7 @@ exports.addProductIntoCartAsync = async (uID, body) => {
             });
         }
 
-
-        cart.cartDetail.forEach(element => {
-            cart.totalPrice = cart.totalPrice + element.pTotal;
-        });
+        cart.totalPrice = cart.totalPrice + cart.cartDetail[cart.cartDetail.length-1].pTotal;
 
         await cart.save();
         return {
@@ -114,6 +111,7 @@ exports.deleteProductInCartAsync = async(uID, pID) => {
         }
 
         if(i<cart.cartDetail.length) {
+            cart.totalPrice = cart.totalPrice - cart.cartDetail[i].pTotal;
             cart.cartDetail.splice(i,1);
         }
         

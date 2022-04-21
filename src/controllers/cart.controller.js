@@ -65,7 +65,7 @@ exports.deleteProductInCartAsync = async (req, res, next) => {
 	try {
         const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
-		const resServices = await discountServices.deleteDiscountAsync(id, req.body.pID);
+		const resServices = await cartServices.deleteProductInCartAsync(id, req.body.pID);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
