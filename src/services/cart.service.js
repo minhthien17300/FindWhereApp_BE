@@ -36,14 +36,26 @@ exports.addProductIntoCartAsync = async (uID, body) => {
     try {
         const { pID, pName, pAmount, pPrice } = body;
         const cart = await CART.findOne({ userID: uID });
-
-        cart.cartDetail.push({
-            pID: pID,
-            pName: pName,
-            pAmount: pAmount,
-            pPrice: pPrice,
-            pTotal: pPrice*pAmount
+        
+        var add = true;
+        cart.cartDetail.forEach(element => {
+            if(element.pID === pID) {
+                element.pAmount = element.pAmount + 1;
+                element.pTotal = element.pPrice*element.pAmount;
+                add = false;
+            }
         });
+
+        if(add) {
+            cart.cartDetail.push({
+                pID: pID,
+                pName: pName,
+                pAmount: pAmount,
+                pPrice: pPrice,
+                pTotal: pPrice*pAmount
+            });
+        }
+
 
         cart.cartDetail.forEach(element => {
             cart.totalPrice = cart.totalPrice + element.pTotal;
