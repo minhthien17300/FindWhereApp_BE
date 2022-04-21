@@ -62,6 +62,11 @@ exports.addProductIntoCartAsync = async (uID, body) => {
         });
 
         await cart.save();
+        return {
+            message: "Thêm thành công!",
+            success: true,
+            data: cart
+        }
 
     } catch (err) {
         console.log(err);
@@ -113,6 +118,11 @@ exports.deleteProductInCartAsync = async(uID, pID) => {
         }
         
         await cart.save();
+        return {
+            message: "Xóa thành công!",
+            success: true,
+            data: cart
+        }
     } catch (err) {
         console.log(err);
         return {

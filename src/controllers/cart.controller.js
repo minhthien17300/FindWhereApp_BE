@@ -6,7 +6,7 @@ exports.getCartAsync = async (req, res, next) => {
         const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
         const resServices = await cartServices.getCartAsync(id);
-        if (resServices.length == 0) {
+        if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
 		return controller.sendSuccess(
@@ -26,7 +26,7 @@ exports.addProductIntoCartAsync = async (req, res, next) => {
         const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
         const resServices = await cartServices.addProductIntoCartAsync(id, req.value.body);
-        if (resServices.length == 0) {
+        if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
 		return controller.sendSuccess(
@@ -46,7 +46,7 @@ exports.editProductInCartAsync = async (req, res, next) => {
         const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
 		const resServices = await cartServices.editProductInCartAsync(id, req.value.body);
-        if (resServices.length == 0) {
+        if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
 		return controller.sendSuccess(
@@ -66,7 +66,7 @@ exports.deleteProductInCartAsync = async (req, res, next) => {
         const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
 		const resServices = await discountServices.deleteDiscountAsync(id, req.body.pID);
-        if (resServices.length == 0) {
+        if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
 		return controller.sendSuccess(
