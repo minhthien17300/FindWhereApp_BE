@@ -53,12 +53,12 @@ exports.addProductIntoCartAsync = async (uID, body) => {
 
         if(i<cart.cartDetail.length) {
             add = false;
+            var tempAmount = cart.cartDetail[i].pAmount + 1;
             var tempCart = cart.cartDetail[i];
-            tempCart.pAmount = pAmount;
-            tempCart.pTotal = tempCart.pPrice*pAmount;
-            cart.totalPrice = cart.totalPrice - cart.cartDetail[i].pTotal;
+            tempCart.pAmount = tempAmount;
+            tempCart.pTotal = tempCart.pPrice*tempAmount;
+            cart.totalPrice = cart.totalPrice + tempCart.pPrice;
             cart.cartDetail.splice(i,1,tempCart);
-            cart.totalPrice = cart.totalPrice + cart.cartDetail[i].pTotal;
         }
 
         if(add) {
@@ -96,25 +96,18 @@ exports.editProductInCartAsync = async(uID, body) => {
         const { pID, pAmount } = body;
         const cart = await CART.findOne({ userID: uID });
 
-        /* cart.cartDetail.forEach(element => {
-            if(element.pID === pID) {
-                element.pAmount = pAmount;
-                element.pTotal = element.pPrice*pAmount;
-            }
-        }); */
-
         var i = 0;
         while(i < cart.cartDetail.length && cart.cartDetail[i].pID != pID) {
             i++;
         }
 
         if(i<cart.cartDetail.length) {
+            var tempPTotal = cart.cartDetail[i].pTotal;
             var tempCart = cart.cartDetail[i];
             tempCart.pAmount = pAmount;
             tempCart.pTotal = tempCart.pPrice*pAmount;
-            cart.totalPrice = cart.totalPrice - cart.cartDetail[i].pTotal;
+            cart.totalPrice = cart.totalPrice - tempPTotal + tempCart.pTotal;
             cart.cartDetail.splice(i,1,tempCart);
-            cart.totalPrice = cart.totalPrice + cart.cartDetail[i].pTotal;
         }
 
         await cart.save();
