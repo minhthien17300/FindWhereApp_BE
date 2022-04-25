@@ -56,7 +56,7 @@ exports.getOrderByTotalPriceAsync = async(uID, sortType) => {
 
 exports.placeOrderAsync = async(uID, body) => {
     try {
-        const { name, phone, location, orderDetail, shipperID, discount, totalPrice } = body;
+        const { name, phone, location, orderDetail, discount, totalPrice } = body;
 
         var curDate = new Date();
         var newOrder = new ORDER({
@@ -66,7 +66,6 @@ exports.placeOrderAsync = async(uID, body) => {
             location: location,
             orderDetail: orderDetail,
             orderDate: curDate,
-            shipperID: shipperID,
             discount: discount,
             totalPrice: totalPrice
         });
@@ -122,7 +121,7 @@ exports.getShipperOrderAsync = async(sID) => {
     }
 }
 
-exports.confirmOrderAsync = async(oID, type) => {
+exports.confirmOrderAsync = async(oID, sID) => {
     try {
         const order = ORDER.findById(oID);
 
@@ -133,16 +132,13 @@ exports.confirmOrderAsync = async(oID, type) => {
             }
         }
 
+        order.shipperID = sID;
         //type = 1 means confirm order, else means not
-        var sendMailService;
-        if(type == 1) {
-            order.isConfirm = true;
-            await order.save();
-            sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 1)
-            clearCartService = await cartHelper.clearCartItemsAsync(order.userID)
-        } else {
-            sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 2)
-        }
+        order.isConfirm = true;
+        await order.save();
+        var sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 1)
+        clearCartService = await cartHelper.clearCartItemsAsync(order.userID)
+        
 
         if(!sendMailService.success) {
             return {

@@ -5,6 +5,7 @@ const schemas = {
         pName: joi.string().required(),
 		pAmount: joi.number(),
         pPrice: joi.number(),
+		pImage: joi.string().required(),
 	}),
 	editProductInCart: joi.object().keys({
         pID: joi.string().required(),

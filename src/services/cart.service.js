@@ -34,17 +34,32 @@ exports.getCartAsync = async (uID) => {
 
 exports.addProductIntoCartAsync = async (uID, body) => {
     try {
-        const { pID, pName, pAmount, pPrice } = body;
+        const { pID, pName, pAmount, pPrice, pImage } = body;
         const cart = await CART.findOne({ userID: uID });
         
         var add = true;
-        cart.cartDetail.forEach(element => {
+        /* cart.cartDetail.forEach(element => {
             if(element.pID === pID) {
                 element.pAmount = element.pAmount + 1;
                 element.pTotal = element.pPrice*element.pAmount;
                 add = false;
             }
-        });
+        }); */
+
+        var i = 0;
+        while(i < cart.cartDetail.length && cart.cartDetail[i].pID != pID) {
+            i++;
+        }
+
+        if(i<cart.cartDetail.length) {
+            add = false;
+            var tempCart = cart.cartDetail[i];
+            tempCart.pAmount = pAmount;
+            tempCart.pTotal = tempCart.pPrice*pAmount;
+            cart.totalPrice = cart.totalPrice - cart.cartDetail[i].pTotal;
+            cart.cartDetail.splice(i,1,tempCart);
+            cart.totalPrice = cart.totalPrice + cart.cartDetail[i].pTotal;
+        }
 
         if(add) {
             cart.cartDetail.push({
@@ -52,11 +67,13 @@ exports.addProductIntoCartAsync = async (uID, body) => {
                 pName: pName,
                 pAmount: pAmount,
                 pPrice: pPrice,
+                pImage: pImage,
                 pTotal: pPrice*pAmount
             });
+            cart.totalPrice = cart.totalPrice + cart.cartDetail[cart.cartDetail.length-1].pTotal;
         }
 
-        cart.totalPrice = cart.totalPrice + cart.cartDetail[cart.cartDetail.length-1].pTotal;
+        
 
         await cart.save();
         return {
@@ -79,12 +96,26 @@ exports.editProductInCartAsync = async(uID, body) => {
         const { pID, pAmount } = body;
         const cart = await CART.findOne({ userID: uID });
 
-        cart.cartDetail.forEach(element => {
+        /* cart.cartDetail.forEach(element => {
             if(element.pID === pID) {
                 element.pAmount = pAmount;
                 element.pTotal = element.pPrice*pAmount;
             }
-        });
+        }); */
+
+        var i = 0;
+        while(i < cart.cartDetail.length && cart.cartDetail[i].pID != pID) {
+            i++;
+        }
+
+        if(i<cart.cartDetail.length) {
+            var tempCart = cart.cartDetail[i];
+            tempCart.pAmount = pAmount;
+            tempCart.pTotal = tempCart.pPrice*pAmount;
+            cart.totalPrice = cart.totalPrice - cart.cartDetail[i].pTotal;
+            cart.cartDetail.splice(i,1,tempCart);
+            cart.totalPrice = cart.totalPrice + cart.cartDetail[i].pTotal;
+        }
 
         await cart.save();
         return {

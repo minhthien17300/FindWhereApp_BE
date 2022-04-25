@@ -84,8 +84,9 @@ exports.getShipperOrderAsync = async (req, res, next) => {
 
 exports.confirmOrderAsync = async (req, res, next) => {
     try {
-		
-        const resServices = await orderServices.getOrderByDateAsync(req.body.oID, req.body.type);
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await orderServices.getOrderByDateAsync(req.body.oID, id);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
