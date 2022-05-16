@@ -1,6 +1,26 @@
 const cartServices = require('../services/cart.service');
 const controller = require('./message.controller');
 
+exports.getCartByEnterpriseAsync = async (req, res, next) => {
+    try {
+        const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await cartServices.getCartByEnterpriseAsync(id, req.query.eID);
+        if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices,
+			200,
+			resServices.message
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
 exports.getCartAsync = async (req, res, next) => {
     try {
         const { decodeToken } = req.value.body;

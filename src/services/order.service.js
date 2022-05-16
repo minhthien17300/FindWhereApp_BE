@@ -93,10 +93,10 @@ exports.placeOrderAsync = async(uID, body) => {
     }
 }
 
-exports.getShipperOrderAsync = async(sID) => {
+exports.getProductsOrderAsync = async(id) => {
     try {
         const orders = await ORDER.find({
-            shipperID: sID
+            enterpriseID: id
         });
 
         if(orders == null) {

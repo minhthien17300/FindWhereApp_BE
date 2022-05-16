@@ -1,4 +1,45 @@
+const { isEmailIdentifier } = require('firebase-admin/lib/auth/identifier');
 const CART = require('../models/CART.model');
+const cartHelper = require('../helpers/cart.helper');
+
+exports.getCartByEnterpriseAsync = async(uID, eID) => {
+    try {
+        const cart = await CART.findOne({ userID: uID });
+        if (cart == null) {
+            return {
+                message: "Oops! Có lỗi xảy ra!",
+                success: false
+            }
+        }
+        if (cart.cartDetail.length === 0) {
+            return {
+                message: "Bạn chưa có gì trong giỏ hàng, hãy chọn vài món hàng!",
+                success: true,
+                data: cart
+            }
+        }
+
+        var cartByEnterprise = [];
+        for(var i=0; i< cart.cartDetail.length; i++) {
+            if(cart.cartDetail[i].eID == eID) {
+                cartByEnterprise.push(cart.cartDetail[i]);
+            }
+        }
+
+        return {
+            message: "success",
+            success: true,
+            data: cartByEnterprise
+        }
+
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Internal Server Error!",
+            success: false
+        }
+    }
+}
 
 exports.getCartAsync = async (uID) => {
     try {
@@ -62,8 +103,20 @@ exports.addProductIntoCartAsync = async (uID, body) => {
         }
 
         if(add) {
+            var enterpirse = await cartHelper.getEnterpirseByProductIDAsync(pID);
+            var j  = 0;
+            while(j < cart.ListEnterpriseID.length && cart.ListEnterpriseID[j].eID != eID) {
+                j++;
+            }
+            if(j == cart.ListEnterpriseID.length) {
+                cart.ListEnterpriseID.push({
+                    eID: enterpirse._id,
+                    eName: enterpirse.name
+                });
+            }
             cart.cartDetail.push({
                 pID: pID,
+                eID: enterpirse._id,
                 pName: pName,
                 pAmount: pAmount,
                 pPrice: pPrice,

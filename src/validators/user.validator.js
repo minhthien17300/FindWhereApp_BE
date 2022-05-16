@@ -54,7 +54,8 @@ const schemas = {
 	addSearchHistory: joi.object().keys({
 		pID: joi.string().required(),
 		pName: joi.string().required(),
-		pPrice: joi.number()
+		pPrice: joi.number(),
+		pImage: joi.string().required(),
 	}),
 };
 module.exports = schemas;

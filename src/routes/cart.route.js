@@ -7,7 +7,7 @@ const jwtServices = require("../services/jwt.service")
 const verifyHelper = require('../helpers/verifyUser.helper')
 const { defaultRoles } = require('../config/defineModel')
 
-
+router.get('/getCartByEnterprise', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getCartByEnterpriseAsync);
 router.get('/getCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getCartAsync);
 router.post('/addProductIntoCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateCart.addProductIntoCart), Controller.addProductIntoCartAsync);
 router.post('/editProductInCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateCart.editProductInCart), Controller.editProductInCartAsync);

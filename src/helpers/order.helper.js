@@ -21,11 +21,11 @@ exports.calculateTotalPriceAfterDiscountAmountAsync = async (id, totalPrice) => 
     }
 }
 
-exports.sendMailToShipperAsync = async (sID) => {
+exports.sendMailToEnterpriseAsync = async (sID) => {
     try {
-        const shipper = await USER.findById(sID);
+        const enterprise = await USER.findById(sID);
         
-        if(shipper == null) {
+        if(enterprise == null) {
             return {
                 message: "Oops! Có lỗi xảy ra",
                 success: false
@@ -33,7 +33,7 @@ exports.sendMailToShipperAsync = async (sID) => {
         }
 
         const mailOptions = {
-            to: shipper.email,
+            to: enterprise.email,
             from: configEnv.Email,
             subject: 'Đơn đặt hàng từ FindWhere',
             text:   'Bạn vừa có khách đặt hàng tại ứng dụng FindWhere!\n'+
@@ -75,10 +75,10 @@ exports.sendMailToCustomerAsync = async (uID, type) => {
         var text;
         //type = 0 means reject
         if(type == 0) {
-            text = "Đơn hàng của bạn đã bị từ chối bởi shipper, vui lòng chọn shipper khác!\n"+
+            text = "Đơn hàng của bạn đã bị từ chối, vui lòng đặt đơn khác!\n"+
                     "Chân thành xin lỗi bạn về sự bất tiện!"
         } else {
-            text = "Đơn hàng của bạn đã được xác nhận, shipper sẽ chuyển hàng trong giây lát!\n"+
+            text = "Đơn hàng của bạn đã được xác nhận, hàng sẽ được chuyển trong giây lát!\n"+
                     "Chân thành cảm ơn bạn đã xử dụng dịch vụ <3"
         }
 

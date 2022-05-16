@@ -1,4 +1,6 @@
 const CART = require('../models/CART.model');
+const PRODUCT = require('../models/PRODUCT.model')
+const USER = require('../models/USERINFO.model');
 
 exports.creatNewCartAsync = async(uID) => {
     try {
@@ -47,5 +49,17 @@ exports.clearCartItemsAsync = async(uID) => {
             message: "Oops! Có lỗi xảy ra!",
             success: false
         }
+    }
+}
+
+exports.getEnterpirseByProductIDAsync = async(pID) => {
+    try {
+        const product = await PRODUCT.findById(pID);
+        var eID = Product.eID;
+        const enterprise = await USER.findById(eID);
+        return enterprise;
+    }
+    catch (err) {
+        return null;
     }
 }

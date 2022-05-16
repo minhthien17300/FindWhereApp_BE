@@ -3,6 +3,7 @@ const { string, array } = require('@hapi/joi');
 const { $where } = require("../models/PRODUCT.model");
 const { query } = require("express");
 const uploadImageHelper = require('../helpers/uploadImage.helper');
+const userHelper = require('../helpers/user.helper');
 
 exports.addProductAsync = async (eID, body, images) => {
     try {
@@ -171,11 +172,42 @@ exports.getProductSortAsync = async () => {
 
 exports.getEnterpriseProductSortAsync = async (id) => {
     try {
+        const enterpriseInfo = userHelper.getEnterpriseInfoAsync(id);
+
+        if(enterpriseInfo == null) {
+            return {
+                success: false,
+                message: "Không lấy được thông tin doanh nghiệp",
+                data: ""
+            }
+        }
+
         const products = await PRODUCT.find({isDeleted: false, eID: id}).sort({score: -1});
         console.log(products);
-        return products;
+        
+        if(products == null) {
+            return {
+                success: true,
+                message: "Doanh nghiệp hiện chưa có sản phẩm nào",
+                data: ""
+            }
+        }
+
+        return {
+            success: true,
+            message: "Lấy thông tin thành công",
+            data: {
+                info: enterpriseInfo,
+                products: products
+            }
+        }
+
     } catch (err) {
 		console.log(err);
-		return null;
+		return {
+            success: false,
+            message: 'Oops! Xảy ra lỗi rồi!',
+            data: ""
+        }
 	}
 };

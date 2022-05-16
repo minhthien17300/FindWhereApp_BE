@@ -614,7 +614,7 @@ exports.getEnterpriseByIDAsync = async (id) => {
 
 exports.addSearchHistoryAsync = async (uID, body) => {
 	try {
-		const { pID, pName, pPrice } = body;
+		const { pID, pName, pPrice, pImage } = body;
 		const user = await USER.findById({ _id: uID });
 		if(user == null) {
 			return {
@@ -625,7 +625,8 @@ exports.addSearchHistoryAsync = async (uID, body) => {
 		let product = {
 			pID: pID,
 			pName: pName,
-			pPrice: pPrice
+			pPrice: pPrice,
+			pImage: pImage
 		}
 		user.searchHistory.push(product);
 		if(user.searchHistory.length > 20) {

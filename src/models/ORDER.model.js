@@ -11,7 +11,7 @@ const OrderSchema = mongoose.Schema({
   //lng: defaultModel.number,
   orderDetail: defaultModel.array,
   orderDate: defaultModel.date,
-  shipperID: defaultModel.string,
+  enterpriseID: defaultModel.string,
   discount: defaultModel.number,
   totalPrice: defaultModel.number,
   isConfirm: defaultModel.booleanFalse
