@@ -211,3 +211,45 @@ exports.getEnterpriseProductSortAsync = async (id) => {
         }
 	}
 };
+
+exports.getProductOfEnterpriseSortAsync = async (id) => {
+    try {
+        const enterpriseInfo = userHelper.getEnterpriseInfoAsync(id);
+
+        if(enterpriseInfo == null) {
+            return {
+                success: false,
+                message: "Không lấy được thông tin doanh nghiệp",
+                data: ""
+            }
+        }
+
+        const products = await PRODUCT.find({isDeleted: false, eID: id}).sort({score: -1});
+        console.log(products);
+        
+        if(products == null) {
+            return {
+                success: true,
+                message: "Doanh nghiệp hiện chưa có sản phẩm nào",
+                data: ""
+            }
+        }
+
+        return {
+            success: true,
+            message: "Lấy thông tin thành công",
+            data: {
+                info: enterpriseInfo,
+                products: products
+            }
+        }
+
+    } catch (err) {
+		console.log(err);
+		return {
+            success: false,
+            message: 'Oops! Xảy ra lỗi rồi!',
+            data: ""
+        }
+	}
+};

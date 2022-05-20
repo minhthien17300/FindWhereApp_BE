@@ -23,7 +23,7 @@ router.post('/unbanUser', jwtServices.verify, verifyHelper.checkRole([defaultRol
 router.get('/getALLUser', Controller.getALLUserAsync);
 router.get('/getALLEnterprise', Controller.getALLEnterpriseAsync);
 router.get('/getEnterpriseByID', Controller.getEnterpriseByIDAsync);
-router.get('/addSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateUser.addSearchHistory), Controller.addSearchHistoryAsync)
+router.post('/addSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateUser.addSearchHistory), Controller.addSearchHistoryAsync)
 router.get('/getSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSearchHistoryAsync)
 
 

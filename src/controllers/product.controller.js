@@ -165,3 +165,21 @@ exports.getEnterpriseProductSortAsync = async (req, res, next) =>{
 	}
 }
 
+exports.getProductOfEnterpriseSortAsync = async (req, res, next) =>{
+    try {
+		
+        const resServices = await productServices.getProductOfEnterpriseSortAsync(req.query.id);
+        if(resServices == null) {
+            return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
+		}
+		return controller.sendSuccess(
+			res,
+			resServices,
+			200
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+

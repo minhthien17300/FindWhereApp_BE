@@ -12,7 +12,7 @@ router.get('/getOrderByDate', jwtServices.verify, verifyHelper.checkRole([defaul
 router.get('/getOrderByTotalPrice', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User]), Controller.getOrderByTotalPriceAsync)
 router.post('/placeOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User]), Validate.body(SchemaValidateOrder.placeOrder), Controller.placeOrderAsync)
 router.get('/getShipperOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.Shipper]), Controller.getShipperOrderAsync)
-router.get('/confirmOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.Shipper]), Controller.confirmOrderAsync)
+router.post('/confirmOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.Shipper]), Controller.confirmOrderAsync)
 
 
 module.exports = router
