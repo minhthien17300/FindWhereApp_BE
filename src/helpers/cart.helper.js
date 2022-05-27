@@ -2,7 +2,7 @@ const CART = require('../models/CART.model');
 const PRODUCT = require('../models/PRODUCT.model')
 const USER = require('../models/USERINFO.model');
 
-exports.creatNewCartAsync = async(uID) => {
+exports.creatNewCartAsync = async (uID) => {
     try {
         const newCart = new CART({
             userID: uID
@@ -20,16 +20,9 @@ exports.creatNewCartAsync = async(uID) => {
     }
 }
 
-exports.clearCartItemsAsync = async(uID) => {
+exports.clearCartItemsAsync = async (uID, eID) => {
     try {
-        const cart = await CART.findOneAndUpdate(
-            { userID: uID },
-            {
-                cartDetail: [],
-                totalPrice: 0
-            },
-            { new: true }
-        );
+        const cart = await CART.findOne({ userID: uID });
 
         if (cart == null) {
             return {
@@ -37,6 +30,24 @@ exports.clearCartItemsAsync = async(uID) => {
                 success: false
             }
         }
+
+        var cartClearItems = cart.cartDetail;
+        for (var i = 0; i < cartClearItems.length; i++) {
+            if(cartClearItems[i].eID == eID){
+                cart.cartDetail.splice(i, 1)
+                i--;
+            }
+        }
+
+        var cartClearEnterprise = cart.ListEnterpriseID;
+        for (var i = 0; i < cartClearEnterprise.length; i++) {
+            if(cartClearEnterprise[i].eID == eID){
+                cart.ListEnterpriseID.splice(i, 1)
+                i--;
+            }
+        }
+
+        cart.save();
 
         return {
             message: "success",
@@ -52,10 +63,10 @@ exports.clearCartItemsAsync = async(uID) => {
     }
 }
 
-exports.getEnterpirseByProductIDAsync = async(pID) => {
+exports.getEnterpirseByProductIDAsync = async (pID) => {
     try {
         const product = await PRODUCT.findById(pID);
-        var eID = Product.eID;
+        var eID = product.eID;
         const enterprise = await USER.findById(eID);
         return enterprise;
     }

@@ -56,7 +56,7 @@ exports.getOrderByTotalPriceAsync = async(uID, sortType) => {
 
 exports.placeOrderAsync = async(uID, body) => {
     try {
-        const { name, phone, location, orderDetail, discount, totalPrice } = body;
+        const { name, phone, location, orderDetail, discount, totalPrice, eID } = body;
 
         var curDate = new Date();
         var newOrder = new ORDER({
@@ -64,6 +64,7 @@ exports.placeOrderAsync = async(uID, body) => {
             name: name,
             phone: phone,
             location: location,
+            enterpriseID: eID,
             orderDetail: orderDetail,
             orderDate: curDate,
             discount: discount,
@@ -71,7 +72,7 @@ exports.placeOrderAsync = async(uID, body) => {
         });
 
         await newOrder.save();
-        const sendMailService = await orderHelper.sendMailToShipperAsync(shipperID);
+        const sendMailService = await orderHelper.sendMailToEnterpriseAsync(eID);
         if(!sendMailService.success) {
             return {
                 message: "Oops! Có lỗi xảy ra",
@@ -132,7 +133,7 @@ exports.confirmOrderAsync = async(oID, sID) => {
             }
         }
 
-        order.shipperID = sID;
+        order.enterpriseID = sID;
         //type = 1 means confirm order, else means not
         order.isConfirm = true;
         await order.save();

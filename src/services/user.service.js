@@ -633,6 +633,10 @@ exports.addSearchHistoryAsync = async (uID, body) => {
 			user.searchHistory.shift();
 		}
 		user.save();
+		return {
+			message: "success",
+			success: true,
+		}
 
 	} catch (err) {
 		console.log(err)
