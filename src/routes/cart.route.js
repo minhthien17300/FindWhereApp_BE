@@ -12,6 +12,7 @@ router.get('/getCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.
 router.post('/addProductIntoCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateCart.addProductIntoCart), Controller.addProductIntoCartAsync);
 router.post('/editProductInCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateCart.editProductInCart), Controller.editProductInCartAsync);
 router.post('/deleteProductInCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.deleteProductInCartAsync);
+router.post('/deleteEnterpirseProductInCart', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.deleteEnterpirseProductInCartAsync);
 
 
 module.exports = router
