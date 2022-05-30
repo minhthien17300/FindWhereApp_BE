@@ -28,6 +28,32 @@ exports.getOrderByDateAsync = async(uID, sortType) => {
     }
 }
 
+exports.getNotConfirmOrderByDateAsync = async(uID, sortType) => {
+    try {
+        //sortType = -1 means descending, 1 means ascending
+        const orders = await ORDER.find({ userID: uID, isConfirm: false }).sort({ orderDate: sortType });
+
+        if(orders == null) {
+            return {
+                message: "Không có thông tin đặt hàng!",
+                success: false
+            }
+        }
+
+        return {
+            message: "Danh sách hóa đơn",
+            success: true,
+            data: orders
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
+
 exports.getOrderByTotalPriceAsync = async(uID, sortType) => {
     try {
         //sortType = -1 means descending, 1 means ascending

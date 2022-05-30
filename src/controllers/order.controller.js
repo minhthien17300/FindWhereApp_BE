@@ -22,6 +22,26 @@ exports.getOrderByDateAsync = async (req, res, next) => {
 	}
 }
 
+exports.getNotConfirmOrderByDateAsync = async (req, res, next) => {
+    try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await orderServices.getNotConfirmOrderByDateAsync(id, req.query.sortType);
+        if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
 exports.getOrderByTotalPriceAsync = async (req, res, next) => {
     try {
 		const { decodeToken } = req.value.body;
@@ -46,7 +66,7 @@ exports.placeOrderAsync = async (req, res, next) => {
     try {
 		const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
-        const resServices = await orderServices.placeOrderAsync(id, req.value.body);
+        const resServices = await orderServices.placeOrderAsync(id, req.body);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
