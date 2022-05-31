@@ -8,7 +8,7 @@ const schemas = {
         lng: joi.number(), 
         orderDetail: joi.array().required(), 
         eID: joi.string().required(),
-        eName: joi.string.require(), 
+        eName: joi.string().required(), 
         discount: joi.number(), 
         totalPrice: joi.number(),
 	}),
