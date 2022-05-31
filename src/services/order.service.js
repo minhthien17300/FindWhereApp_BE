@@ -82,7 +82,7 @@ exports.getOrderByTotalPriceAsync = async(uID, sortType) => {
 
 exports.placeOrderAsync = async(uID, body) => {
     try {
-        const { name, phone, location, orderDetail, discount, totalPrice, eID } = body;
+        const { name, phone, location, orderDetail, discount, totalPrice, eID, eName, lat, lng } = body;
 
         var curDate = new Date();
         var newOrder = new ORDER({
@@ -90,7 +90,10 @@ exports.placeOrderAsync = async(uID, body) => {
             name: name,
             phone: phone,
             location: location,
+            lat: lat,
+            lng: lng,
             enterpriseID: eID,
+            enterpirseName: eName,
             orderDetail: orderDetail,
             orderDate: curDate,
             discount: discount,
@@ -123,7 +126,35 @@ exports.placeOrderAsync = async(uID, body) => {
 exports.getProductsOrderAsync = async(id) => {
     try {
         const orders = await ORDER.find({
-            enterpriseID: id
+            enterpriseID: id, isConfirm: true
+        });
+
+        if(orders == null) {
+            return {
+                message: "Không có đơn hàng đang chờ",
+                success: false
+            }
+        }
+
+        return {
+            message: "Danh sách đơn hàng",
+            success: true,
+            data: orders
+        }
+
+    } catch {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
+
+exports.getNotConfirmProductsOrderAsync = async(id) => {
+    try {
+        const orders = await ORDER.find({
+            enterpriseID: id, isConfirm: false
         });
 
         if(orders == null) {

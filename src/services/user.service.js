@@ -244,7 +244,11 @@ exports.loginAsync = async body => {
 		return {
 			message: 'Đăng nhập thành công!',
 			success: true,
-			data: generateToken
+			data: {
+				token: generateToken,
+				id: user._id,
+				role: user.role
+			}
 		};
 	} catch (err) {
 		console.log(err);

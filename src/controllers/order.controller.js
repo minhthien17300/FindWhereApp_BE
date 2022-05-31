@@ -82,11 +82,31 @@ exports.placeOrderAsync = async (req, res, next) => {
 	}
 }
 
-exports.getShipperOrderAsync = async (req, res, next) => {
+exports.getProductsOrderAsync = async (req, res, next) => {
     try {
 		const { decodeToken } = req.value.body;
 		const id = decodeToken.data.id;
-        const resServices = await orderServices.getShipperOrderAsync(id);
+        const resServices = await orderServices.getProductsOrderAsync(id);
+        if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
+exports.getNotConfirmProductsOrderAsync = async (req, res, next) => {
+    try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await orderServices.getNotConfirmProductsOrderAsync(id);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
