@@ -93,7 +93,7 @@ exports.placeOrderAsync = async(uID, body) => {
             lat: lat,
             lng: lng,
             enterpriseID: eID,
-            enterpirseName: eName,
+            enterpriseName: eName,
             orderDetail: orderDetail,
             orderDate: curDate,
             discount: discount,
@@ -195,7 +195,7 @@ exports.confirmOrderAsync = async(oID, sID) => {
         order.isConfirm = true;
         await order.save();
         var sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 1)
-        clearCartService = await cartHelper.clearCartItemsAsync(order.userID)
+        clearCartService = await cartHelper.clearCartItemsAsync(order.userID, order.enterpriseID)
         
 
         if(!sendMailService.success) {

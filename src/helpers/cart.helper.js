@@ -47,7 +47,7 @@ exports.clearCartItemsAsync = async (uID, eID) => {
             }
         }
 
-        cart.save();
+        await cart.save();
 
         return {
             message: "success",
