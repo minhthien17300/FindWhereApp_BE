@@ -101,13 +101,13 @@ exports.placeOrderAsync = async(uID, body) => {
         });
 
         await newOrder.save();
-        const sendMailService = await orderHelper.sendMailToEnterpriseAsync(eID);
-        if(!sendMailService.success) {
-            return {
-                message: "Oops! Có lỗi xảy ra",
-                success: false
-            }
-        }
+        // const sendMailService = await orderHelper.sendMailToEnterpriseAsync(eID);
+        // if(!sendMailService.success) {
+        //     return {
+        //         message: "Oops! Có lỗi xảy ra",
+        //         success: false
+        //     }
+        // }
         
         return {
             message: "Đặt hàng thành công",
@@ -179,9 +179,13 @@ exports.getNotConfirmProductsOrderAsync = async(id) => {
     }
 }
 
-exports.confirmOrderAsync = async(oID, sID) => {
+exports.confirmOrderAsync = async(oID) => {
     try {
-        const order = ORDER.findById(oID);
+        const order = await ORDER.findOneAndUpdate(
+            { _id: oID }, 
+            {
+                isConfirm: true
+            });
 
         if(order == null) {
             return {
@@ -190,20 +194,16 @@ exports.confirmOrderAsync = async(oID, sID) => {
             }
         }
 
-        order.enterpriseID = sID;
-        //type = 1 means confirm order, else means not
-        order.isConfirm = true;
-        await order.save();
-        var sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 1)
+        //var sendMailService = await orderHelper.sendMailToCustomerAsync(order.userID, 1)
         clearCartService = await cartHelper.clearCartItemsAsync(order.userID, order.enterpriseID)
         
 
-        if(!sendMailService.success) {
-            return {
-                message: "Oops! Có lỗi xảy ra",
-                success: false
-            }
-        }
+        // if(!sendMailService.success) {
+        //     return {
+        //         message: "Oops! Có lỗi xảy ra",
+        //         success: false
+        //     }
+        // }
 
         if(!clearCartService.success) {
             return {
@@ -217,7 +217,7 @@ exports.confirmOrderAsync = async(oID, sID) => {
             success: true
         }
 
-    } catch {
+    } catch (err) {
         console.log(err);
         return {
             message: "Internal Server Error",

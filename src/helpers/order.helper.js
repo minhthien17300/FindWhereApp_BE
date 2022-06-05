@@ -2,6 +2,7 @@ const DISCOUNT = require('../models/DISCOUNT.model');
 const USER = require('../models/USERINFO.model')
 const nodemailer = require('nodemailer');
 const { sendMail } = require('../services/sendMail.service');
+const { configEnv } = require('../config/config');
 
 
 exports.calculateTotalPriceAfterDiscountAmountAsync = async (id, totalPrice) => {

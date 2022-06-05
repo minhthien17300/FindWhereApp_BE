@@ -124,9 +124,7 @@ exports.getNotConfirmProductsOrderAsync = async (req, res, next) => {
 
 exports.confirmOrderAsync = async (req, res, next) => {
     try {
-		const { decodeToken } = req.value.body;
-		const id = decodeToken.data.id;
-        const resServices = await orderServices.getOrderByDateAsync(req.body.oID, id);
+        const resServices = await orderServices.confirmOrderAsync(req.body.oID);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
