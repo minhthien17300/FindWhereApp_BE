@@ -30,6 +30,7 @@ router.get('/findProductByName', Controller.findProductByNameAsync)
 router.get('/getProductSort', Controller.getProductSortAsync)
 router.get('/getEnterpriseProductSort', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getEnterpriseProductSortAsync)
 router.get('/getProductOfEnterpriseSort',  Controller.getProductOfEnterpriseSortAsync)
+router.get('/getSuggestedProducts', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSuggestedProductsAsync)
 
 
 module.exports = router

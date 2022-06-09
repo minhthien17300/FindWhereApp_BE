@@ -253,3 +253,36 @@ exports.getProductOfEnterpriseSortAsync = async (id) => {
         }
 	}
 };
+
+exports.getSuggestedProductsAsync = async(id) => {
+    try {
+        const searchHistory = await userHelper.getSearchHistoryAsync(id);
+        //console.log(Object.keys(searchHistory)[0]);
+        if(searchHistory == null) 
+        return {
+            success: false,
+            message: "Không có dữ liệu lịch sử",
+            data: null
+        }
+
+        var IDList = [];
+        for(var i = 0; i<Object.keys(searchHistory).length; i++) {
+            IDList.push(Object.keys(searchHistory)[i])
+        }
+
+        const suggestedProducts = await PRODUCT.find({ _id: {$in: IDList} })
+
+        return {
+            success: true,
+            message: "Danh sách sản phẩm đề xuất",
+            data: suggestedProducts
+        }
+    } catch (err){
+        console.log(err);
+        return {
+            success: false,
+            message: 'Oops! Xảy ra lỗi rồi!',
+            data: null
+        }
+    }
+}

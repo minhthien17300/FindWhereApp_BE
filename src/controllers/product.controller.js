@@ -183,3 +183,23 @@ exports.getProductOfEnterpriseSortAsync = async (req, res, next) =>{
 	}
 }
 
+exports.getSuggestedProductsAsync = async (req, res, next) =>{
+    try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await productServices.getSuggestedProductsAsync(id);
+        if(!resServices.success) {
+            return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
