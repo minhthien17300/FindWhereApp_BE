@@ -75,7 +75,7 @@ exports.getCartAsync = async (uID) => {
 
 exports.addProductIntoCartAsync = async (uID, body) => {
     try {
-        const { pID, pName, pAmount, pPrice, pImage } = body;
+        const { pID, pName, pAmount, pPrice, pImage, isLarge } = body;
         const cart = await CART.findOne({ userID: uID });
 
         var add = true;
@@ -112,6 +112,7 @@ exports.addProductIntoCartAsync = async (uID, body) => {
                 eID: enterprise._id.toString(),
                 pName: pName,
                 pAmount: pAmount,
+                isLarge: isLarge,
                 pPrice: pPrice,
                 pImage: pImage,
                 pTotal: pPrice * pAmount

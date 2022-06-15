@@ -9,6 +9,7 @@ const otpGenerator = require('otp-generator');
 const { string } = require('@hapi/joi');
 const cartHelper = require('../helpers/cart.helper')
 const localStorageService = require('./localStorage.service');
+const userHelper = require('../helpers/user.helper');
 
 exports.registerUserAsync = async body => {
 	try {
@@ -672,5 +673,78 @@ exports.getSearchHistoryAsync = async (id) => {
 			message: 'Oops! Có lỗi xảy ra!',
 			success: false
 		};
+	}
+}
+
+exports.UploadUserLocationAsync = async (id, body) => {
+	try {
+		const { lat, lng } = body;
+		const user = await USER.findOneAndUpdate(
+			{ _id: id },
+			{ lat: lat, lng: lng },
+			{ new: true });
+		if(user == null){
+			return {
+				message: "Internal Server Error",
+				success: false
+			}
+		}
+
+		return {
+			message: "Success",
+			success: true
+		}
+
+
+	}
+	catch (err) {
+		return {
+			message: "Failed",
+			success: false,
+			data: err
+		}
+	}
+}
+
+exports.getShipperAroundAsync = async (id) => {
+	try {
+		const enterprise = await USER.findById({ _id: id });
+		if(enterprise == null){
+			return {
+				message: "Not Found",
+				success: false
+			}
+		}
+		
+		//(lat2+lng2) - (lat1+lng1) <= 0.025
+
+		const shippers = await USER.find(
+			user => userHelper.distanceBetweenEnterpriseAndShipper(
+				user.lat, 
+				user.lng, 
+				enterprise.lat, 
+				enterprise.lng) <= 2
+		)
+
+		if(shippers == null){
+			return {
+				message: "Not Found",
+				success: true,
+				data: null
+			}
+		}
+
+		return {
+			message: "Success",
+			success: true,
+			data: shippers
+		}
+	}
+	catch (err) {
+		return {
+			message: "Failed",
+			success: false,
+			data: err
+		}
 	}
 }

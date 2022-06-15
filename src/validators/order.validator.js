@@ -9,7 +9,8 @@ const schemas = {
         orderDetail: joi.array().required(), 
         eID: joi.string().required(),
         eName: joi.string().required(), 
-        discount: joi.number(), 
+        discount: joi.number(),
+        shipCost: joi.number(),
         totalPrice: joi.number(),
 	}),
 };

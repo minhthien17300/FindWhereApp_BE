@@ -430,7 +430,56 @@ exports.getSearchHistoryAsync = async (req, res, next) => {
 			200
 		);
 	} catch (error) {
-		// bug
+		console.log(error);
+		return controller.sendError(res);
+	}
+};
+
+exports.UploadUserLocationAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await userServices.UploadUserLocationAsync(id, req.body);
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (error) {
+		console.log(error);
+		return controller.sendError(res);
+	}
+};
+
+exports.getShipperAroundAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await userServices.getShipperAroundAsync(id);
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (error) {
 		console.log(error);
 		return controller.sendError(res);
 	}

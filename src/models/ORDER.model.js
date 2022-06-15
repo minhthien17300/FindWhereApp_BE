@@ -14,6 +14,7 @@ const OrderSchema = mongoose.Schema({
   enterpriseID: defaultModel.string,
   enterpriseName: defaultModel.string,
   discount: defaultModel.number,
+  shipCost: defaultModel.number,
   totalPrice: defaultModel.number,
   isConfirm: defaultModel.booleanFalse
 });

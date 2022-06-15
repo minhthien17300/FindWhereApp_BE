@@ -82,7 +82,7 @@ exports.getOrderByTotalPriceAsync = async(uID, sortType) => {
 
 exports.placeOrderAsync = async(uID, body) => {
     try {
-        const { name, phone, location, orderDetail, discount, totalPrice, eID, eName, lat, lng } = body;
+        const { name, phone, location, orderDetail, discount, totalPrice, eID, eName, lat, lng, shipCost } = body;
 
         var curDate = new Date();
         var newOrder = new ORDER({
@@ -97,7 +97,8 @@ exports.placeOrderAsync = async(uID, body) => {
             orderDetail: orderDetail,
             orderDate: curDate,
             discount: discount,
-            totalPrice: totalPrice
+            totalPrice: totalPrice,
+            shipCost: shipCost
         });
 
         await newOrder.save();
