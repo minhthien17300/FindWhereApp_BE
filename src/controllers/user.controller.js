@@ -484,3 +484,26 @@ exports.getShipperAroundAsync = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 };
+
+exports.getShipperAroundAsync2 = async (req, res, next) => {
+	try {
+		const resServices = await userServices.getShipperAroundAsync2();
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (error) {
+		console.log(error);
+		return controller.sendError(res);
+	}
+};

@@ -723,8 +723,35 @@ exports.getShipperAroundAsync = async (id) => {
 				user.lat, 
 				user.lng, 
 				enterprise.lat, 
-				enterprise.lng) <= 2
+				enterprise.lng) <= 2 && user.role == 3
 		)
+
+		if(shippers == null){
+			return {
+				message: "Not Found",
+				success: true,
+				data: null
+			}
+		}
+
+		return {
+			message: "Success",
+			success: true,
+			data: shippers
+		}
+	}
+	catch (err) {
+		return {
+			message: "Failed",
+			success: false,
+			data: err
+		}
+	}
+}
+
+exports.getShipperAroundAsync2 = async () => {
+	try {
+		const shippers = await USER.find({ role: 3 });
 
 		if(shippers == null){
 			return {

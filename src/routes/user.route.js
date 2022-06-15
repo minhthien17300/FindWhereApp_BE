@@ -27,6 +27,7 @@ router.post('/addSearchHistory', jwtServices.verify, verifyHelper.checkRole([def
 router.get('/getSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSearchHistoryAsync)
 router.get('/UploadUserLocation', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User, defaultRoles.Enterprise, defaultRoles.Shipper]), Controller.UploadUserLocationAsync)
 router.get('/GetShipperAround', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getShipperAroundAsync)
+router.get('/GetShipperAround2', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getShipperAroundAsync2)
 
 
 module.exports = router
