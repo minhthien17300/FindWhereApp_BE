@@ -13,6 +13,8 @@ const OrderSchema = mongoose.Schema({
   orderDate: defaultModel.date,
   enterpriseID: defaultModel.string,
   enterpriseName: defaultModel.string,
+  shipperID: defaultModel.string,
+  shipperName: defaultModel.string,
   discount: defaultModel.number,
   shipCost: defaultModel.number,
   totalPrice: defaultModel.number,

@@ -180,12 +180,15 @@ exports.getNotConfirmProductsOrderAsync = async(id) => {
     }
 }
 
-exports.confirmOrderAsync = async(oID) => {
+exports.confirmOrderAsync = async(body) => {
     try {
+        const { oID, shipperID, shipperName } = body
         const order = await ORDER.findOneAndUpdate(
             { _id: oID }, 
             {
-                isConfirm: true
+                isConfirm: true,
+                shipperID: shipperID,
+                shipperName: shipperName
             });
 
         if(order == null) {

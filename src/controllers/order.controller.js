@@ -124,7 +124,7 @@ exports.getNotConfirmProductsOrderAsync = async (req, res, next) => {
 
 exports.confirmOrderAsync = async (req, res, next) => {
     try {
-        const resServices = await orderServices.confirmOrderAsync(req.body.oID);
+        const resServices = await orderServices.confirmOrderAsync(req.body);
         if (!resServices.success) {
 			return controller.sendSuccess(res, {}, 400, resServices.message);
 		}
