@@ -183,3 +183,41 @@ exports.placeOrderAsync2 = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 }
+
+exports.confirmShipperOrderAsync = async (req, res, next) => {
+	try {
+		const resServices = await orderServices.confirmShipperOrderAsync(req.body.oID);
+		if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
+exports.GetShipperOrderAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await orderServices.GetShipperOrderAsync(id);
+		if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}

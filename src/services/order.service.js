@@ -5,7 +5,7 @@ const cartHelper = require('../helpers/cart.helper')
 exports.getOrderByDateAsync = async (uID, sortType) => {
     try {
         //sortType = -1 means descending, 1 means ascending
-        const orders = await ORDER.find({ userID: uID, isConfirm: true }).sort({ orderDate: sortType });
+        const orders = await ORDER.find({ userID: uID, status: 2 }).sort({ orderDate: sortType });
 
         if (orders == null) {
             return {
@@ -31,7 +31,7 @@ exports.getOrderByDateAsync = async (uID, sortType) => {
 exports.getNotConfirmOrderByDateAsync = async (uID, sortType) => {
     try {
         //sortType = -1 means descending, 1 means ascending
-        const orders = await ORDER.find({ userID: uID, isConfirm: false }).sort({ orderDate: sortType });
+        const orders = await ORDER.find({ userID: uID, status: 0 }).sort({ orderDate: sortType });
 
         if (orders == null) {
             return {
@@ -57,7 +57,7 @@ exports.getNotConfirmOrderByDateAsync = async (uID, sortType) => {
 exports.getOrderByTotalPriceAsync = async (uID, sortType) => {
     try {
         //sortType = -1 means descending, 1 means ascending
-        const orders = await ORDER.find({ userID: uID, isConfirm: true }).sort({ totalPrice: sortType });
+        const orders = await ORDER.find({ userID: uID, status: 2 }).sort({ totalPrice: sortType });
 
         if (orders == null) {
             return {
@@ -146,7 +146,7 @@ exports.paymentConfirmAsync = async (id) => {
 exports.getProductsOrderAsync = async (id) => {
     try {
         const orders = await ORDER.find({
-            enterpriseID: id, isConfirm: true
+            enterpriseID: id, status: 2
         });
 
         if (orders == null) {
@@ -174,7 +174,7 @@ exports.getProductsOrderAsync = async (id) => {
 exports.getNotConfirmProductsOrderAsync = async (id) => {
     try {
         const orders = await ORDER.find({
-            enterpriseID: id, isConfirm: false
+            enterpriseID: id, status: 0
         });
 
         if (orders == null) {
@@ -205,7 +205,7 @@ exports.confirmOrderAsync = async (body) => {
         const order = await ORDER.findOneAndUpdate(
             { _id: oID },
             {
-                isConfirm: true,
+                status: 1,
                 shipperID: shipperID,
                 shipperName: shipperName
             });
@@ -328,6 +328,64 @@ exports.placeOrderAsync2 = async (uID, body, ipAddr) => {
             message: "Đặt hàng thành công",
             success: true,
             data: vnpUrl
+        }
+
+    } catch (err) {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
+
+exports.GetShipperOrderAsync = async(sID) => {
+    try {
+        const orders = await ORDER.find({
+            shipperID: sID, status: 1
+        });
+
+        if (orders == null) {
+            return {
+                message: "Không có đơn hàng đang chờ",
+                success: false
+            }
+        }
+
+        return {
+            message: "Danh sách đơn hàng",
+            success: true,
+            data: orders
+        }
+    }
+    catch (err) {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
+
+exports.confirmShipperOrderAsync = async (oID) => {
+    try {
+        
+        const order = await ORDER.findOneAndUpdate(
+            { _id: oID },
+            {
+                status: 2
+            });
+
+        if (order == null) {
+            return {
+                message: "Có vấn đề khi lấy đơn hàng",
+                success: false
+            }
+        }
+
+        return {
+            message: "Xác nhận thành công",
+            success: true
         }
 
     } catch (err) {

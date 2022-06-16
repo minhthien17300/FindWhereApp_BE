@@ -19,7 +19,7 @@ const OrderSchema = mongoose.Schema({
   shipCost: defaultModel.number,
   totalPrice: defaultModel.number,
   isOnlinePayment: defaultModel.booleanFalse,
-  isConfirm: defaultModel.booleanFalse
+  status: defaultModel.number
 });
 
 const Order = module.exports = mongoose.model('ORDER', OrderSchema, 'ORDER');
