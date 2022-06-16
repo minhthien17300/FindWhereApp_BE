@@ -221,3 +221,21 @@ exports.GetShipperOrderAsync = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 }
+
+exports.getOrderByIdAsync = async (req, res, next) => {
+	try {
+		const resServices = await orderServices.getOrderByIdAsync(req.query.oID);
+		if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}

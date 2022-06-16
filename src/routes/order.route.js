@@ -19,6 +19,7 @@ router.post('/paymentConfirm', Controller.paymentConfirmAsync)
 router.post('/placeOrder2', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User]), Validate.body(SchemaValidateOrder.placeOrder2), Controller.placeOrderAsync2)
 router.post('/confirmShipperOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Shipper]), Controller.confirmShipperOrderAsync)
 router.get('/getShipperOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Shipper]), Controller.GetShipperOrderAsync)
+router.get('/getOrderById', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User, defaultRoles.Admin, defaultRoles.Enterprise]), Controller.getOrderByIdAsync)
 
 
 module.exports = router

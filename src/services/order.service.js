@@ -396,3 +396,29 @@ exports.confirmShipperOrderAsync = async (oID) => {
         }
     }
 }
+
+exports.getOrderByIdAsync = async (id) => {
+    try {
+        const order = await ORDER.findById({ _id: id });
+
+        if (order == null) {
+            return {
+                message: "Không có đơn hàng",
+                success: false
+            }
+        }
+
+        return {
+            message: "đơn hàng",
+            success: true,
+            data: order
+        }
+
+    } catch {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
