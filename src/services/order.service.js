@@ -274,9 +274,6 @@ exports.placeOrderAsync2 = async (uID, body, ipAddr) => {
         await newOrder.save();
 
         if (payType == 1) {
-            startDate = new Date(startDate).toISOString().slice(0, 10);
-            endDate = new Date(endDate).toISOString().slice(0, 10);
-
             var finalpayment = totalPrice;
             var tmnCode = "CHY6OPJR";
             var secretKey = "PMIMRINOXGCPYUKQAHXXLTPSKDMGCPED";
@@ -317,7 +314,7 @@ exports.placeOrderAsync2 = async (uID, body, ipAddr) => {
                 vnp_Params["vnp_BankCode"] = bankCode;
             }
 
-            vnp_Params = sortObject(vnp_Params);
+            vnp_Params =orderHelper.sortObject(vnp_Params);
 
             var querystring = require("qs");
             var signData = querystring.stringify(vnp_Params, { encode: false });
