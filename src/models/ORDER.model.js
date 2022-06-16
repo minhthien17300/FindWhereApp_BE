@@ -18,6 +18,7 @@ const OrderSchema = mongoose.Schema({
   discount: defaultModel.number,
   shipCost: defaultModel.number,
   totalPrice: defaultModel.number,
+  isOnlinePayment: defaultModel.booleanFalse,
   isConfirm: defaultModel.booleanFalse
 });
 

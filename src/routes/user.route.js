@@ -25,7 +25,7 @@ router.get('/getALLEnterprise', Controller.getALLEnterpriseAsync);
 router.get('/getEnterpriseByID', Controller.getEnterpriseByIDAsync);
 router.post('/addSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateUser.addSearchHistory), Controller.addSearchHistoryAsync)
 router.get('/getSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSearchHistoryAsync)
-router.get('/uploadUserLocation', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User, defaultRoles.Enterprise, defaultRoles.Shipper]), Controller.UploadUserLocationAsync)
+router.post('/uploadUserLocation', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User, defaultRoles.Enterprise, defaultRoles.Shipper]), Controller.UploadUserLocationAsync)
 router.get('/getShipperAround', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getShipperAroundAsync)
 router.get('/getShipperAround2', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getShipperAroundAsync2)
 
