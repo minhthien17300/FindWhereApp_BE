@@ -507,3 +507,27 @@ exports.getShipperAroundAsync2 = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 };
+
+exports.registerUserByGoogleAccountAsync = async (req, res, next) => {
+	try {
+		const resServices = await userServices.registerUserByGoogleAccountAsync(req.body);
+
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				400,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+};

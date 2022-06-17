@@ -28,6 +28,7 @@ router.get('/getSearchHistory', jwtServices.verify, verifyHelper.checkRole([defa
 router.post('/uploadUserLocation', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User, defaultRoles.Enterprise, defaultRoles.Shipper]), Controller.UploadUserLocationAsync)
 router.get('/getShipperAround', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getShipperAroundAsync)
 router.get('/getShipperAround2', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getShipperAroundAsync2)
+router.post('/registerUserByGoogleAccount', Controller.registerAsync)
 
 
 module.exports = router
