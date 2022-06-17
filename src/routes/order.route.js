@@ -20,6 +20,8 @@ router.post('/placeOrder2', jwtServices.verify, verifyHelper.checkRole([defaultR
 router.post('/confirmShipperOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Shipper]), Controller.confirmShipperOrderAsync)
 router.get('/getShipperOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Shipper]), Controller.GetShipperOrderAsync)
 router.get('/getOrderById', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User, defaultRoles.Admin, defaultRoles.Enterprise]), Controller.getOrderByIdAsync)
+router.get('/getShipperConfirmOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Shipper]), Controller.GetShipperConfirmOrderAsync)
+router.get('/GetUserOnTheWayOrder', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User]), Controller.GetUserOnTheWayOrderAsync)
 
 
 module.exports = router

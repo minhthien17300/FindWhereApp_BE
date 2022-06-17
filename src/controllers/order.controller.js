@@ -239,3 +239,43 @@ exports.getOrderByIdAsync = async (req, res, next) => {
 		return controller.sendError(res);
 	}
 }
+
+exports.GetShipperConfirmOrderAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await orderServices.GetShipperConfirmOrderAsync(id);
+		if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
+exports.GetUserOnTheWayOrderAsync = async (req, res, next) => {
+	try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+		const resServices = await orderServices.GetUserOnTheWayOrderAsync(id);
+		if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}

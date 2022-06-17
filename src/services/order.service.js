@@ -126,9 +126,19 @@ exports.placeOrderAsync = async (uID, body) => {
 
 exports.paymentConfirmAsync = async (id) => {
     try {
-        const order = await ORDER.findById({ _id: id });
-        order.isOnlinePayment = true;
-        await order.save();
+        const order = await ORDER.findOneAndUpdate(
+            { _id: id },
+            { isOnlinePayment: true },
+            { new: true }
+            );
+        // order.isOnlinePayment = true;
+        // await order.save();
+        if(order == null){
+            return {
+                success: false,
+                message: "failed"
+            }
+        }
         return {
             success: true,
             message: "success"
@@ -415,6 +425,65 @@ exports.getOrderByIdAsync = async (id) => {
         }
 
     } catch {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
+
+exports.GetShipperConfirmOrderAsync = async(sID) => {
+    try {
+        const orders = await ORDER.find({
+            shipperID: sID, status: 2
+        });
+
+        if (orders == null) {
+            return {
+                message: "Không có đơn hàng đang chờ",
+                success: false
+            }
+        }
+
+        return {
+            message: "Danh sách đơn hàng",
+            success: true,
+            data: orders
+        }
+    }
+    catch (err) {
+        console.log(err);
+        return {
+            message: "Internal Server Error",
+            success: false
+        }
+    }
+}
+
+exports.GetUserOnTheWayOrderAsync = async(uID) => {
+    try {
+        const orders = await ORDER.find({
+            userID: uID, $or: [
+				{status: 0},
+				{status: 1}
+			]
+        });
+
+        if (orders == null) {
+            return {
+                message: "Không có đơn hàng đang chờ",
+                success: false
+            }
+        }
+
+        return {
+            message: "Danh sách đơn hàng",
+            success: true,
+            data: orders
+        }
+    }
+    catch (err) {
         console.log(err);
         return {
             message: "Internal Server Error",

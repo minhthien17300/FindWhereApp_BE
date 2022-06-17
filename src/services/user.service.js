@@ -751,7 +751,7 @@ exports.getShipperAroundAsync = async (id) => {
 
 exports.getShipperAroundAsync2 = async () => {
 	try {
-		const shippers = await USER.find({ role: 3 });
+		const shippers = await USER.find({ role: 3, isActived: true });
 
 		if(shippers == null){
 			return {
