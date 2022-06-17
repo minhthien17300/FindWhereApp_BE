@@ -464,10 +464,7 @@ exports.GetShipperConfirmOrderAsync = async(sID) => {
 exports.GetUserOnTheWayOrderAsync = async(uID) => {
     try {
         const orders = await ORDER.find({
-            userID: uID, $or: [
-				{status: 0},
-				{status: 1}
-			]
+            userID: uID, status: 1
         });
 
         if (orders == null) {
