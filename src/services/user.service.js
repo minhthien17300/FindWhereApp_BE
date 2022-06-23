@@ -718,15 +718,17 @@ exports.getShipperAroundAsync = async (id) => {
 
 		//(lat2+lng2) - (lat1+lng1) <= 0.025
 
-		const shippers = await USER.find(
-			user => userHelper.distanceBetweenEnterpriseAndShipper(
-				user.lat,
-				user.lng,
-				enterprise.lat,
-				enterprise.lng) <= 2 && user.role == 3
-		)
+		const shippers = await USER.find({role: 3});
+		var resultShippers = [];
+		for(var i =0; i< shippers.length; i++) {
+			if(Math.abs((shippers[i].lat+shippers[i].lng) 
+				- (enterprise.lat+enterprise.lng)) < 0.025)
+				resultShippers.push(shippers[i]);
+		};
 
-		if (shippers == null) {
+		console.log((resultShippers));
+
+		if (resultShippers == null) {
 			return {
 				message: "Not Found",
 				success: true,
@@ -737,7 +739,7 @@ exports.getShipperAroundAsync = async (id) => {
 		return {
 			message: "Success",
 			success: true,
-			data: shippers
+			data: resultShippers
 		}
 	}
 	catch (err) {
