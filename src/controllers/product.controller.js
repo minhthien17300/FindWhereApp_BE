@@ -165,6 +165,25 @@ exports.getEnterpriseProductSortAsync = async (req, res, next) =>{
 	}
 }
 
+exports.getEnterpriseProductSort2Async = async (req, res, next) =>{
+    try {
+		const { decodeToken } = req.value.body;
+		const id = decodeToken.data.id;
+        const resServices = await productServices.getEnterpriseProductSort2Async(id);
+        if(resServices == null) {
+            return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+
 exports.getProductOfEnterpriseSortAsync = async (req, res, next) =>{
     try {
 		

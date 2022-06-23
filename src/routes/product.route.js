@@ -29,6 +29,7 @@ router.get('/getProductDetail', Controller.getProductDetailAsync)
 router.get('/findProductByName', Controller.findProductByNameAsync)
 router.get('/getProductSort', Controller.getProductSortAsync)
 router.get('/getEnterpriseProductSort', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getEnterpriseProductSortAsync)
+router.get('/getEnterpriseProductSort2', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Enterprise]), Controller.getEnterpriseProductSort2Async)
 router.get('/getProductOfEnterpriseSort',  Controller.getProductOfEnterpriseSortAsync)
 router.get('/getSuggestedProducts', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSuggestedProductsAsync)
 
