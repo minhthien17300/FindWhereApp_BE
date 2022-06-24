@@ -222,3 +222,21 @@ exports.getSuggestedProductsAsync = async (req, res, next) =>{
 	}
 }
 
+exports.changeProductStatusAsync = async (req, res, next) =>{
+    try {
+        const resServices = await productServices.changeProductStatusAsync(req.body.id);
+        if(!resServices.success) {
+            return controller.sendSuccess(res, {}, 404, "Oops! Có lỗi xảy ra!");
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+    } catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+}
+

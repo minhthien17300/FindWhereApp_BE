@@ -316,3 +316,34 @@ exports.getSuggestedProductsAsync = async(id) => {
         }
     }
 }
+
+exports.changeProductStatusAsync = async(id) => {
+    try {
+        const product = await PRODUCT.findOneAndUpdate(
+            { _id: id },
+            { isOutStock: !isOutStock },
+            { new: true }
+        )
+        if(product == null){
+            return {
+                success: false,
+                message: "lỗi",
+                data: null
+            }
+        }
+
+        return {
+            success: true,
+            message: "success",
+            data: product
+        }
+    }
+    catch(err){
+        console.log(err);
+        return {
+            success: false,
+            message: 'Oops! Xảy ra lỗi rồi!',
+            data: null
+        }
+    }
+}

@@ -10,6 +10,7 @@ const ProductSchema = mongoose.Schema({
   types: defaultModel.array,
   images: defaultModel.array,
   score: defaultModel.number,
+  isOutStock: defaultModel.booleanFalse,
   isDeleted: defaultModel.booleanFalse
 });
 

@@ -16,6 +16,7 @@ const UserSchema = mongoose.Schema({
   role: defaultModel.number,
   searchHistory: defaultModel.array,
   orderHistory: defaultModel.array,
+  activeTime: defaultModel.string,
   otp: defaultModel.string,
   isWarned: defaultModel.number,
   isActived: defaultModel.booleanFalse
