@@ -1,5 +1,5 @@
 const PRODUCT = require("../models/PRODUCT.model");
-const { string, array } = require('@hapi/joi');
+const { string, array, bool, boolean } = require('@hapi/joi');
 const { $where } = require("../models/PRODUCT.model");
 const { query } = require("express");
 const uploadImageHelper = require('../helpers/uploadImage.helper');
@@ -319,11 +319,10 @@ exports.getSuggestedProductsAsync = async(id) => {
 
 exports.changeProductStatusAsync = async(id) => {
     try {
-        const product = await PRODUCT.findOneAndUpdate(
-            { _id: id },
-            { isOutStock: !isOutStock },
-            { new: true }
+        const product = await PRODUCT.findById(
+            { _id: id }
         )
+
         if(product == null){
             return {
                 success: false,
@@ -331,6 +330,11 @@ exports.changeProductStatusAsync = async(id) => {
                 data: null
             }
         }
+
+        var bool = product.isOutStock;
+
+        product.isOutStock = !bool;
+        product.save();
 
         return {
             success: true,
