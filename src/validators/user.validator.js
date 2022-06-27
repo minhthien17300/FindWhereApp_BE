@@ -49,7 +49,8 @@ const schemas = {
 		gender: joi.number(),
 		dateofBirth: joi.date(),
 		lat: joi.number(),
-		lng: joi.number()
+		lng: joi.number(),
+		activeTime: joi.string().required()
 	}),
 	addSearchHistory: joi.object().keys({
 		pID: joi.string().required(),

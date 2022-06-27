@@ -466,7 +466,7 @@ exports.changeInfoAsync = async (id, body) => {
 
 exports.changeEnterpriseInfoAsync = async (id, body) => {
 	try {
-		const { name, phone, gender, dateofBirth, lat, lng } = body;
+		const { name, phone, gender, dateofBirth, lat, lng, activeTime } = body;
 		const user = await USER.findOneAndUpdate(
 			{ _id: id },
 			{
@@ -476,7 +476,8 @@ exports.changeEnterpriseInfoAsync = async (id, body) => {
 				gender: gender,
 				dateofBirth: dateofBirth,
 				lat: lat,
-				lng: lng
+				lng: lng,
+				activeTime: activeTime
 			},
 			{ new: true }
 		);
