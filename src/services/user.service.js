@@ -205,6 +205,59 @@ exports.addEnterpriseAsync = async body => {
 	}
 };
 
+exports.addShipperAsync = async body => {
+	try {
+		const { userName, name, email, phone, lat, lng } = body;
+		//kiểm tra xem đã có email trong database chưa
+		const emailExist = await USER.findOne({
+			email: email
+		});
+		if (emailExist)
+			return {
+				message: 'Email đã tồn tại!',
+				success: false
+			};
+		//kiểm tra xem đã có username trong database chưa
+		const userExist = await USER.findOne({
+			userName: userName
+		});
+		if (userExist)
+			return {
+				message: "Tài khoản đã tồn tại!",
+				success: false
+			}
+		//mã hóa password
+		const hashedPassword = await bcrypt.hash("12345", 8);
+
+		//lưu lại ngày tạo
+		var curDate = new Date();
+		//lưu enterprise
+		const newUser = new USER({
+			userName: userName,
+			userPwd: hashedPassword,
+			name: name,
+			email: email,
+			phone: phone,
+			dateofBirth: curDate,
+			role: 3,
+			lat: lat,
+			lng: lng
+		});
+		await newUser.save();
+		return {
+			message: 'Tạo thành công',
+			success: true,
+			email: email
+		};
+	} catch (err) {
+		console.log(err);
+		return {
+			error: 'Internal Server Error',
+			success: false
+		};
+	}
+};
+
 exports.loginAsync = async body => {
 	try {
 		const { userName, userPwd } = body;
@@ -607,6 +660,32 @@ exports.getALLEnterpriseAsync = async () => {
 		};
 	}
 }
+
+exports.getALLShipperAsync = async () => {
+	try {
+		const users = await USER.find({ role: 3 });
+		if (users.length == 0) {
+			return {
+				message: "Không có Shipper trong hệ thống!",
+				data: {},
+				success: false
+			}
+		} else {
+			return {
+				message: "Danh sách Shipper",
+				data: users,
+				success: true
+			}
+		}
+	} catch (error) {
+		console.log(error);
+		return {
+			message: 'Oops! Có lỗi xảy ra!',
+			success: false
+		};
+	}
+}
+
 
 exports.getEnterpriseByIDAsync = async (id) => {
 	try {

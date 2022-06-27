@@ -133,6 +133,25 @@ exports.addEnterpriseAsync = async (req, res, next) => {
 	}
 };
 
+exports.addShipperAsync = async (req, res, next) => {
+	try {
+		const resServices = await userServices.addShipperAsync(req.value.body);
+		if (!resServices.success) {
+			return controller.sendSuccess(res, {}, 400, resServices.message);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+
+	} catch (err) {
+		console.log(err);
+		return controller.sendError(res);
+	}
+};
+
 exports.loginAsync = async (req, res, next) => {
 	try {
 		const resServices = await userServices.loginAsync(req.value.body);
@@ -360,6 +379,29 @@ exports.getALLUserAsync = async (req, res, next) => {
 exports.getALLEnterpriseAsync = async (req, res, next) => {
 	try {
 		const resServices = await userServices.getALLEnterpriseAsync();
+		if (!resServices.success) {
+			return controller.sendSuccess(
+				res,
+				resServices.success,
+				404,
+				resServices.message
+			);
+		}
+		return controller.sendSuccess(
+			res,
+			resServices.data,
+			200,
+			resServices.message
+		);
+	} catch (error) {
+		console.log(error);
+		return controller.sendError(res);
+	}
+};
+
+exports.getALLShipperAsync = async (req, res, next) => {
+	try {
+		const resServices = await userServices.getALLShipperAsync();
 		if (!resServices.success) {
 			return controller.sendSuccess(
 				res,

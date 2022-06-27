@@ -12,6 +12,7 @@ router.post('/login', Validate.body(SchemaValidateUser.login), Controller.loginA
 router.post('/register', Validate.body(SchemaValidateUser.register), Controller.registerAsync)
 router.post('/confirmUnlock', Validate.body(SchemaValidateUser.confirmUnlock), Controller.confirmUnlockAsync)
 router.post('/addEnterprise', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin]), Validate.body(SchemaValidateUser.addEnterprise), Controller.addEnterpriseAsync)
+router.post('/addShipper', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin]), Validate.body(SchemaValidateUser.addShipper), Controller.addShipperAsync)
 router.post('/changePassword', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin, defaultRoles.User, defaultRoles.Enterprise]), Validate.body(SchemaValidateUser.changePass), Controller.changePasswordAsync)
 router.get('/forgotPassword', Controller.forgotPasswordAsync)
 router.post('/resetPassword', Validate.body(SchemaValidateUser.resetPassword), Controller.resetPasswordAsync)
@@ -22,6 +23,7 @@ router.post('/banUser', jwtServices.verify, verifyHelper.checkRole([defaultRoles
 router.post('/unbanUser', jwtServices.verify, verifyHelper.checkRole([defaultRoles.Admin]), Controller.unbanUserAsync)
 router.get('/getALLUser', Controller.getALLUserAsync);
 router.get('/getALLEnterprise', Controller.getALLEnterpriseAsync);
+router.get('/getALLShipper', Controller.getALLShipperAsync);
 router.get('/getEnterpriseByID', Controller.getEnterpriseByIDAsync);
 router.post('/addSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Validate.body(SchemaValidateUser.addSearchHistory), Controller.addSearchHistoryAsync)
 router.get('/getSearchHistory', jwtServices.verify, verifyHelper.checkRole([defaultRoles.User]), Controller.getSearchHistoryAsync)
